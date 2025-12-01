@@ -1,0 +1,48 @@
+spring:
+   application:
+      name: MyCityGov
+
+   datasource:
+      url: jdbc:h2:file:./LOCAL_DATA/h2/mycitygov;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+      username: sa
+      password: changeme
+      driver-class-name: org.h2.Driver
+
+   jpa:
+      hibernate:
+         ddl-auto: create-drop # dev only – recreates schema on each run
+      open-in-view: false
+      properties:
+         # Hibernate will auto-detect H2 dialect, no need to set it explicitly
+         hibernate.format_sql: true
+
+   h2:
+      console:
+         enabled: true
+         path: /h2-console
+
+server:
+   error:
+      whitelabel:
+         enabled: false
+      include-message: always
+      include-binding-errors: always
+      include-exception: true
+
+# JWT configuration (used in JwtUtils)
+app:
+   jwt:
+      secret: 42a3f78e4d9c0a6b5c3e8f1d2b4a7c0e8d6f9a2c1b3e5d7f0a9b8c7d6e5f4a3b
+      expiration-ms: 86400000
+
+# OpenAPI Configuration (Swagger)
+springdoc:
+   swagger-ui:
+      path: /swagger-ui.html
+   api-docs:
+      path: /v3/api-docs
+
+# Mock External Service URL
+external:
+   service:
+      base-url: http://localhost:8081

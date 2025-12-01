@@ -35,6 +35,10 @@ public class User {
    @Column(nullable = false, length = 20)
    private UserType userType;
 
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "department_id", nullable = true)
+   private ServiceDepartment serviceDepartment;
+
    public User() {
    }
 
@@ -123,6 +127,14 @@ public class User {
 
    public void setUserType(UserType userType) {
       this.userType = userType;
+   }
+
+   public ServiceDepartment getServiceDepartment() {
+      return serviceDepartment;
+   }
+
+   public void setServiceDepartment(ServiceDepartment serviceDepartment) {
+      this.serviceDepartment = serviceDepartment;
    }
 
    @Override
