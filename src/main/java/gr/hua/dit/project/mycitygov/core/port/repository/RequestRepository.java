@@ -1,4 +1,4 @@
-package gr.hua.dit.project.mycitygov.core.repository;
+package gr.hua.dit.project.mycitygov.core.port.repository;
 
 import gr.hua.dit.project.mycitygov.core.model.Request;
 import gr.hua.dit.project.mycitygov.core.model.RequestType;
