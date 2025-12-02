@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        layout:decorate="~{base}">
+
+<head>
+    <title>Αίτημα #<th:block th:text="${request.id()}"></th:block></title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="content-main container-sm">
+
+    <!-- FIXED: Left aligned, larger font size, bold weight -->
+    <p class="mb-4" style="text-align: left; font-size: 1.2rem; font-weight: 600;">
+        <a th:href="@{/tickets}" style="color: var(--primary-color); text-decoration: none;">
+            <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Πίσω στη Λίστα
+        </a>
+    </p>
+
+    <h1 class="text-xl">Αίτημα: <span th:text="${request.subject()}"></span></h1>
+    <h2 class="text-lg mb-4" th:text="'Πρωτόκολλο: ' + ${request.protocolNumber()}"></h2>
+
+    <div style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
+        <h3 class="text-md" style="margin-top: 0; color: var(--primary-color);">Στοιχεία Αιτήματος</h3>
+        <ul style="padding-left: 20px;">
+            <li><strong>Κατάσταση:</strong> <b th:text="${request.status().name()}"></b></li>
+            <li><strong>Υπηρεσία:</strong> <b th:text="${request.department().name()}"></b></li>
+            <li th:if="${request.assignedEmployee() != null}"><strong>Ανατεθειμένος:</strong> <b th:text="${request.assignedEmployee().fullName()}"></b></li>
+            <li><strong>Υποβλήθηκε:</strong> <b th:text="${#temporals.format(request.submittedAt(), 'dd-MM-yyyy HH:mm')}"></b></li>
+            <li><strong>Προθεσμία (SLA):</strong> <b th:text="${#temporals.format(request.slaDeadline(), 'dd-MM-yyyy HH:mm')}" style="color: orange;"></b></li>
+        </ul>
+    </div>
+
+    <div class="mt-4" style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
+        <h3 class="text-md" style="margin-top: 0;">Περιεχόμενο Πολίτη</h3>
+        <p th:text="${request.content()}"></p>
+        <p th:if="${request.attachmentUrl() != null}" class="text-sm mt-2">
+            <i class="fas fa-paperclip"></i> <strong>Συνημμένο:</strong> <a th:href="${request.attachmentUrl()}" target="_blank">Προβολή Αρχείου</a>
+        </p>
+    </div>
+
+    <div th:if="${request.employeeComments() != null}" class="mt-4" style="border: 1px solid #ddd; padding: 20px; border-radius: 5px; background: var(--light-color);">
+        <h3 class="text-md" style="margin-top: 0; color: var(--dark-color);">Σχόλια Υπαλλήλου</h3>
+        <p th:text="${request.employeeComments()}"></p>
+    </div>
+
+    <!-- Employee/Admin Actions -->
+    <div sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN')" class="mt-4">
+        <h3 class="text-lg">Ενέργειες Υπαλλήλου</h3>
+
+        <div th:if="${request.assignedEmployee() == null}">
+            <p style="color: var(--primary-color); font-weight: 600;">Αυτό το αίτημα δεν έχει ανατεθεί.</p>
+            <!-- Ensure 'me' is in the model (via ControllerAdvice) -->
+            <form th:action="@{|/tickets/${request.id()}/assign|}" method="post">
+                <button type="submit" class="btn btn-dark text-md"><i class="fas fa-hand-holding"></i> Ανάληψη Αιτήματος</button>
+            </form>
+        </div>
+
+        <div th:if="${request.assignedEmployee() != null and request.assignedEmployee().id() == me.id() and request.status().name() != 'COMPLETED' and request.status().name() != 'REJECTED'}">
+            <form th:action="@{|/tickets/${request.id()}/status|}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="newStatus">Αλλαγή Κατάστασης</label>
+                    <select id="newStatus" name="newStatus" class="form-select">
+                        <option value="IN_PROCESSING">Σε Επεξεργασία</option>
+                        <option value="AWAITING_DOCS">Σε Αναμονή Στοιχείων</option>
+                        <option value="COMPLETED">Ολοκληρωμένο</option>
+                        <option value="REJECTED">Απορρίφθηκε</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comments">Σχόλια/Τεκμηρίωση</label>
+                    <textarea id="comments" name="comments" class="form-textarea" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary text-md"><i class="fas fa-sync-alt"></i> Ενημέρωση</button>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

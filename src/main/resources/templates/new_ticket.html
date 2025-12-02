@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{base}">
+
+<head>
+    <title>Νέο Αίτημα</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="content-main container-sm">
+
+    <p class="mb-4">
+        <a th:href="@{/tickets}" style="color: var(--primary-color);"><i class="fas fa-arrow-left"></i> Πίσω στη Λίστα</a>
+    </p>
+
+    <div class="card-box">
+        <h1 class="text-xl text-center" style="margin-bottom: 10px;">Υποβολή Νέου Αιτήματος</h1>
+        <p class="text-md text-center" style="color: #666; margin-bottom: 30px;">Επιλέξτε Υπηρεσία και περιγράψτε το αίτημά σας.</p>
+
+        <!-- ACTION points to /tickets/new -->
+        <form th:action="@{/tickets/new}" method="post" th:object="${openRequest}">
+
+            <div class="form-group">
+                <label for="departmentId" class="form-label">Δημοτική Υπηρεσία</label>
+                <select id="departmentId" name="departmentId" th:field="*{departmentId}" class="form-select" required>
+                    <option value="">-- Επιλέξτε Υπηρεσία --</option>
+                    <option value="1">ΚΕΠ</option>
+                    <option value="2">Τεχνική Υπηρεσία</option>
+                    <option value="3">Κοινωνική Υπηρεσία</option>
+                    <option value="4">Υπηρεσία Φωτισμού</option>
+                </select>
+                <div class="error-message" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="subject" class="form-label">Θέμα Αιτήματος</label>
+                <input type="text" id="subject" name="subject" th:field="*{subject}" class="form-control" placeholder="π.χ. Αίτηση Βεβαίωσης Μόνιμης Κατοικίας" required />
+                <div class="error-message" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="content" class="form-label">Περιεχόμενο / Αναλυτική Περιγραφή</label>
+                <textarea id="content" name="content" th:field="*{content}" class="form-textarea" rows="5" placeholder="Αναλυτική περιγραφή του αιτήματος ή του προβλήματος..." required></textarea>
+                <div class="error-message" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="attachmentUrl" class="form-label">Συνημμένο (URL)</label>
+                <input type="url" id="attachmentUrl" name="attachmentUrl" th:field="*{attachmentUrl}" class="form-control" placeholder="π.χ. https://storage.gr/document.pdf" />
+                <p class="text-sm" style="color: #999; margin-top: 5px;">(Προαιρετικό)</p>
+                <div class="error-message" th:if="${#fields.hasErrors('attachmentUrl')}" th:errors="*{attachmentUrl}"></div>
+            </div>
+
+            <div class="form-group mt-4 text-center">
+                <button type="submit" class="btn btn-primary text-md" style="padding: 10px 40px;">
+                    <i class="fas fa-paper-plane"></i> Υποβολή
+                </button>
+            </div>
+        </form>
+    </div>
+
+</main>
+
+</body>
+</html>
