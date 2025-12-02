@@ -1,21 +1,17 @@
 package gr.hua.dit.project.mycitygov.core.repository;
 
-import gr.hua.dit.project.mycitygov.core.model.RequestType;
 import gr.hua.dit.project.mycitygov.core.model.ServiceDepartment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.List;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<ServiceDepartment, Long> {
    Optional<ServiceDepartment> findByCode(String code);
 
    Optional<ServiceDepartment> findByName(String name);
-
-   List<RequestType> findByServiceDepartmentAndActiveTrue(ServiceDepartment department);
 
    boolean existsByCode(String code);
 

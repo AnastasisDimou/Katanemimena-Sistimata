@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
    Optional<User> findByPhoneNumber(String phoneNumber);
 
-   List<User> finAllByUserType(UserType userType);
+   List<User> findAllByUserType(UserType userType);
 
    boolean existsByAfm(String afm);
 
