@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DepartmentRepository extends JpaRepository<ServiceDepartment, Long> {
+public interface ServiceDepartmentRepository extends JpaRepository<ServiceDepartment, Long> {
    Optional<ServiceDepartment> findByCode(String code);
 
    Optional<ServiceDepartment> findByName(String name);
