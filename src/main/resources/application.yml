@@ -3,8 +3,6 @@ spring:
     name: MyCityGov
 
   datasource:
-    # File-based H2 database with AUTO_SERVER=TRUE to allow multiple connections/prevent lock issues
-    # This is crucial for connecting via IntelliJ while the app is running.
     url: jdbc:h2:./LOCAL_DATA/h2/mycitygov;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE
     username: sa
     password: changeme
@@ -12,7 +10,8 @@ spring:
 
   jpa:
     hibernate:
-      # 'update' keeps the schema and data persistent across restarts.
+      # We are using 'update' in order to keep the schema
+      # and data persistent across restarts
       ddl-auto: update
     open-in-view: false
     properties:

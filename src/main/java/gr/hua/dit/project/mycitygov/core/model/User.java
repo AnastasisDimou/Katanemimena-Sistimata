@@ -1,7 +1,13 @@
 package gr.hua.dit.project.mycitygov.core.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
+
+/**
+ * Person entity.
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -10,25 +16,25 @@ public class User {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column(nullable = false, length = 20, unique = true)
+   @Column(name = "afm", nullable = false, length = 20, unique = true)
    private String afm;
 
-   @Column(nullable = false, length = 20, unique = true)
+   @Column(name = "amka", nullable = false, length = 20, unique = true)
    private String amka;
 
-   @Column(nullable = false, length = 100)
+   @Column(name = "first_name", nullable = false, length = 100)
    private String firstName;
 
-   @Column(nullable = false, length = 100)
+   @Column(name = "last_name", nullable = false, length = 100)
    private String lastName;
 
-   @Column(nullable = false, unique = true, length = 100)
+   @Column(name = "email", nullable = false, unique = true, length = 100)
    private String email;
 
-   @Column(nullable = false, unique = true, length = 18)
+   @Column(name = "phone_number", nullable = false, unique = true, length = 18)
    private String phoneNumber;
 
-   @Column(nullable = false)
+   @Column(name = "password_hash", nullable = false)
    private String passwordHash;
 
    @Enumerated(EnumType.STRING)
@@ -39,8 +45,11 @@ public class User {
    @JoinColumn(name = "department_id", nullable = true)
    private ServiceDepartment serviceDepartment;
 
-   public User() {
-   }
+   @CreationTimestamp
+   @Column(name = "created_at", nullable = false, updatable = false)
+   private Instant createdAt;
+
+   public User() {}
 
    public User(Long id, String afm, String amka,
          String firstName, String lastName,
@@ -55,6 +64,7 @@ public class User {
       this.phoneNumber = phoneNumber;
       this.passwordHash = passwordHash;
       this.userType = userType;
+      this.createdAt = Instant.now();
    }
 
    public Long getId() {
@@ -137,7 +147,11 @@ public class User {
       this.serviceDepartment = serviceDepartment;
    }
 
-   @Override
+    public Instant getCreatedAt() {return createdAt;}
+
+    public void setCreatedAt(Instant createdAt) {this.createdAt = createdAt;}
+
+    @Override
    public String toString() {
       return "User{" +
             "id=" + id +
