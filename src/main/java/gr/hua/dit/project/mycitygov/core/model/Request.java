@@ -13,7 +13,7 @@ public class Request {
 
    // reference number for the citizen
    @Column(nullable = false, unique = true, length = 100)
-   private String code;
+   private String protocolNumber;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "citizen_id", nullable = false)
@@ -45,7 +45,7 @@ public class Request {
    public Request() {
    }
 
-   public Request(String code,
+   public Request(String protocolNumber,
          User citizen,
          RequestType requestType,
          RequestStatus status,
@@ -54,7 +54,7 @@ public class Request {
          LocalDateTime completionDate,
          User assignedEmployee,
          String description) {
-      this.code = code;
+      this.protocolNumber = protocolNumber;
       this.citizen = citizen;
       this.requestType = requestType;
       this.status = status;
@@ -73,12 +73,12 @@ public class Request {
       this.id = id;
    }
 
-   public String getCode() {
-      return code;
+   public String getProtocolNumber() {
+      return protocolNumber;
    }
 
-   public void setCode(String code) {
-      this.code = code;
+   public void setProtocolNumber(String protocolNumber) {
+      this.protocolNumber = protocolNumber;
    }
 
    public User getCitizen() {
@@ -149,7 +149,7 @@ public class Request {
    public String toString() {
       return "Request{" +
             "id=" + id +
-            ", code='" + code + '\'' +
+            ", protocolNumber='" + protocolNumber + '\'' +
             ", status=" + status +
             ", citizenId=" + (citizen != null ? citizen.getId() : null) +
             ", requestTypeId=" + (requestType != null ? requestType.getId() : null) +

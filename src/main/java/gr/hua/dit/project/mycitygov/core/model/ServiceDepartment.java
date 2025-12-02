@@ -13,7 +13,7 @@ public class ServiceDepartment {
    @Column(nullable = false, unique = true, length = 100)
    private String code; // e.g. "KEP", "TECHNICAL"
 
-   @Column(nullable = false, length = 200)
+   @Column(nullable = false, unique = true, length = 200)
    private String name; // e.g. "ΚΕΠ Δήμου"
 
    @Column(length = 500)
