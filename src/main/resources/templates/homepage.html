@@ -1,81 +1,71 @@
 <!DOCTYPE html>
 <html
-   xmlns:th="https://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-   layout:decorate="~{base}"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        layout:decorate="~{base}"
 >
-   <main layout:fragment="main">
-      <!-- Hero Section -->
-      <section class="hero">
-         <div class="container text-center">
+<main layout:fragment="main">
+    <section class="hero">
+        <div class="container text-center">
             <div class="hero-content">
-               <h1 class="hero-text text-xxl">Καλώς ήρθατε στο MyCityGov</h1>
-               <p class="text-xl my-4 font-semibold">
-                  Η ολοκληρωμένη πλατφόρμα ψηφιακών υπηρεσιών του Δήμου.
-                  Υποβάλετε αιτήματα και κλείστε ραντεβού εύκολα και γρήγορα.
-               </p>
-               <br /><br />
-               <div class="hero-buttons">
-                  <a th:href="@{/tickets/new}" class="btn btn-primary"
-                     >Νέο Αίτημα</a
-                  >
-                  <a
-                     th:href="@{/register}"
-                     class="btn btn-dark"
-                     sec:authorize="!isAuthenticated()"
-                     >Εγγραφή</a
-                  >
-               </div>
+                <h1 class="hero-text text-xxl">Καλώς ήρθατε στο MyCityGov</h1>
+                <p class="text-xl my-4 font-semibold">
+                    Η ολοκληρωμένη πλατφόρμα ψηφιακών υπηρεσιών του Δήμου.
+                    Υποβάλετε αιτήματα και κλείστε ραντεβού εύκολα και γρήγορα.
+                </p>
+                <br /><br />
+                <div class="hero-buttons">
+                    <a th:href="@{/tickets/new}" class="btn btn-primary"
+                    >Νέο Αίτημα</a
+                    >
+                    <a
+                            th:href="@{/register}"
+                            class="btn btn-dark"
+                            sec:authorize="!isAuthenticated()"
+                    >Εγγραφή</a
+                    >
+                </div>
             </div>
-         </div>
-      </section>
+        </div>
+    </section>
 
-      <br /><br />
+    <br /><br />
 
-      <!-- Additional Content (Features) -->
-      <section class="container" style="margin-bottom: 50px">
-         <div class="text-center">
+    <section class="container" style="margin-bottom: 50px">
+        <div class="text-center">
             <h2 class="text-xl">Πώς λειτουργεί;</h2>
             <p class="text-md">Τρία απλά βήματα για την εξυπηρέτησή σας.</p>
-         </div>
+        </div>
 
-         <div
-            style="
-               display: grid;
-               grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-               gap: 20px;
-               margin-top: 30px;
-               text-align: center;
-            "
-         >
-            <div>
-               <i
-                  class="fas fa-user-plus fa-3x"
-                  style="color: var(--primary-color)"
-               ></i>
-               <h3 class="text-lg">1. Εγγραφή</h3>
-               <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
+        <div class="steps-grid">
+            <div class="step-item">
+                <i
+                        class="fas fa-user-plus fa-3x"
+                        style="color: var(--primary-color)"
+                ></i>
+                <h3 class="text-lg">1. Εγγραφή</h3>
+                <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
             </div>
-            <div>
-               <i
-                  class="fas fa-file-alt fa-3x"
-                  style="color: var(--primary-color)"
-               ></i>
-               <h3 class="text-lg">2. Αίτημα</h3>
-               <p>
-                  Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.
-               </p>
+            <div class="step-item">
+                <i
+                        class="fas fa-file-alt fa-3x"
+                        style="color: var(--primary-color)"
+                ></i>
+                <h3 class="text-lg">2. Αίτημα</h3>
+                <p>
+                    Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.
+                </p>
             </div>
-            <div>
-               <i
-                  class="fas fa-check-circle fa-3x"
-                  style="color: var(--primary-color)"
-               ></i>
-               <h3 class="text-lg">3. Ενημέρωση</h3>
-               <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
+            <div class="step-item">
+                <i
+                        class="fas fa-check-circle fa-3x"
+                        style="color: var(--primary-color)"
+                ></i>
+                <h3 class="text-lg">3. Ενημέρωση</h3>
+                <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
             </div>
-         </div>
-      </section>
-   </main>
+        </div>
+    </section>
+</main>
 </html>
