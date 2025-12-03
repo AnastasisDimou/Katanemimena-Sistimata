@@ -1,80 +1,105 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{base}">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Σύνδεση</title>
+   </head>
+   <link rel="stylesheet" href="style.css" />
+   <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+   />
+   <body>
+      <!-- Added class="content-main" to ensure layout styling persists after replacement -->
+      <main layout:fragment="main" class="content-main">
+         <div
+            class="card-box text-center"
+            style="max-width: 500px; margin: 0 auto"
+         >
+            <h1 style="margin-bottom: 20px">Σύνδεση Χρήστη</h1>
 
-<head>
-    <title>Σύνδεση</title>
-</head>
-<link rel="stylesheet" href="style.css" />
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-      rel='stylesheet'>
-<body>
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="post">
+               <!-- Success/Error Messages -->
+               <div
+                  th:if="${param.error}"
+                  class="error-message"
+                  style="margin-bottom: 15px"
+               >
+                  Λάθος email ή κωδικός.
+               </div>
+               <div
+                  th:if="${param.logout}"
+                  style="color: green; margin-bottom: 15px"
+               >
+                  Αποσυνδεθήκατε επιτυχώς.
+               </div>
 
-<!-- Added class="content-main" to ensure layout styling persists after replacement -->
-<main layout:fragment="main" class="content-main">
-    <div class="card-box text-center" style="max-width: 500px; margin: 0 auto;">
-        <h1 style="margin-bottom: 20px;">Σύνδεση Χρήστη</h1>
+               <div class="form-group">
+                  <label class="form-label" for="username">Email</label>
+                  <input
+                     type="text"
+                     id="username"
+                     name="username"
+                     class="form-control"
+                     required
+                     autofocus
+                  />
+               </div>
 
-        <!-- Login Form -->
-        <form th:action="@{/login}" method="post">
-
-            <!-- Success/Error Messages -->
-            <div th:if="${param.error}" class="error-message" style="margin-bottom: 15px;">
-                Λάθος email ή κωδικός.
-            </div>
-            <div th:if="${param.logout}" style="color: green; margin-bottom: 15px;">
-                Αποσυνδεθήκατε επιτυχώς.
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="username">Email</label>
-                <input type="text" id="username" name="username" class="form-control" required autofocus />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="password">Κωδικός</label>
-                <div class="password-container">
-                    <!-- Required for Spring Security -->
-                    <input type="password" id="password" name="password" class="form-control" required />
-                    <span class="togglePassword" data-target="password">
+               <div class="form-group">
+                  <label class="form-label" for="password">Κωδικός</label>
+                  <div class="password-container">
+                     <!-- Required for Spring Security -->
+                     <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-control"
+                        required
+                     />
+                     <span class="togglePassword" data-target="password">
                         <i class="fas fa-eye-slash"></i>
-                    </span>
-                </div>
-            </div>
+                     </span>
+                  </div>
+               </div>
 
-            <button type="submit" class="btn btn-block">Είσοδος</button>
-        </form>
+               <button type="submit" class="btn btn-block">Είσοδος</button>
+            </form>
 
-        <p style="margin-top: 20px;">
-            Δεν έχετε λογαριασμό; <a th:href="@{/register}" style="color: var(--primary-color);">Εγγραφείτε εδώ</a>
-        </p>
-    </div>
+            <p style="margin-top: 20px">
+               Δεν έχετε λογαριασμό;
+               <a th:href="@{/register}" style="color: var(--primary-color)"
+                  >Εγγραφείτε εδώ</a
+               >
+            </p>
+         </div>
 
-    <!-- JavaScript for Password Toggle -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.togglePassword').forEach(span => {
-                span.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const targetInput = document.getElementById(targetId);
-                    const icon = this.querySelector('i');
+         <!-- JavaScript for Password Toggle -->
+         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+               document.querySelectorAll(".togglePassword").forEach((span) => {
+                  span.addEventListener("click", function () {
+                     const targetId = this.getAttribute("data-target");
+                     const targetInput = document.getElementById(targetId);
+                     const icon = this.querySelector("i");
 
-                    if (targetInput.type === 'password') {
-                        targetInput.type = 'text';
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    } else {
-                        targetInput.type = 'password';
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    }
-                });
+                     if (targetInput.type === "password") {
+                        targetInput.type = "text";
+                        icon.classList.remove("fa-eye-slash");
+                        icon.classList.add("fa-eye");
+                     } else {
+                        targetInput.type = "password";
+                        icon.classList.remove("fa-eye");
+                        icon.classList.add("fa-eye-slash");
+                     }
+                  });
+               });
             });
-        });
-    </script>
-</main>
-
-</body>
+         </script>
+      </main>
+   </body>
 </html>

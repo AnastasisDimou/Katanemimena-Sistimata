@@ -1,138 +1,213 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{base}">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Εγγραφή</title>
+   </head>
 
-<head>
-    <title>Εγγραφή</title>
-</head>
+   <body>
+      <main layout:fragment="main" class="content-main">
+         <div class="card-box" style="max-width: 600px; margin: 0 auto">
+            <h1 class="text-center" style="margin-bottom: 20px">
+               Δημιουργία Λογαριασμού
+            </h1>
 
-<body>
+            <form
+               th:action="@{/register}"
+               method="post"
+               th:object="${createUserRequest}"
+               id="registrationForm"
+            >
+               <!-- Global Error -->
+               <div
+                  th:if="${errorMessage}"
+                  class="error-message text-center"
+                  style="margin-bottom: 15px"
+                  th:text="${errorMessage}"
+               ></div>
 
-<main layout:fragment="main" class="content-main">
-    <div class="card-box" style="max-width: 600px; margin: 0 auto;">
-        <h1 class="text-center" style="margin-bottom: 20px;">Δημιουργία Λογαριασμού</h1>
+               <div class="form-group">
+                  <label class="form-label">Είμαι:</label>
+                  <select th:field="*{type}" class="form-select">
+                     <option value="CITIZEN">Πολίτης</option>
+                     <option value="EMPLOYEE">Υπάλληλος</option>
+                     <option value="ADMIN">Διαχειριστής</option>
+                  </select>
+               </div>
 
-        <form th:action="@{/register}" method="post" th:object="${createUserRequest}" id="registrationForm">
+               <div class="form-group">
+                  <label class="form-label">ΑΦΜ / ΑΜΚΑ</label>
+                  <input
+                     type="text"
+                     th:field="*{idNumber}"
+                     class="form-control"
+                     placeholder="123456789"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('idNumber')}"
+                     th:errors="*{idNumber}"
+                  ></div>
+               </div>
 
-            <!-- Global Error -->
-            <div th:if="${errorMessage}" class="error-message text-center" style="margin-bottom: 15px;" th:text="${errorMessage}"></div>
+               <div class="form-group">
+                  <label class="form-label">Όνομα</label>
+                  <input
+                     type="text"
+                     th:field="*{firstName}"
+                     class="form-control"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('firstName')}"
+                     th:errors="*{firstName}"
+                  ></div>
+               </div>
 
-            <div class="form-group">
-                <label class="form-label">Είμαι:</label>
-                <select th:field="*{type}" class="form-select">
-                    <option value="CITIZEN">Πολίτης</option>
-                    <option value="EMPLOYEE">Υπάλληλος</option>
-                    <option value="ADMIN">Διαχειριστής</option>
-                </select>
-            </div>
+               <div class="form-group">
+                  <label class="form-label">Επώνυμο</label>
+                  <input
+                     type="text"
+                     th:field="*{lastName}"
+                     class="form-control"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('lastName')}"
+                     th:errors="*{lastName}"
+                  ></div>
+               </div>
 
-            <div class="form-group">
-                <label class="form-label">ΑΦΜ / ΑΜΚΑ</label>
-                <input type="text" th:field="*{idNumber}" class="form-control" placeholder="123456789" />
-                <div class="error-message" th:if="${#fields.hasErrors('idNumber')}" th:errors="*{idNumber}"></div>
-            </div>
+               <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input
+                     type="email"
+                     th:field="*{emailAddress}"
+                     class="form-control"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('emailAddress')}"
+                     th:errors="*{emailAddress}"
+                  ></div>
+               </div>
 
-            <div class="form-group">
-                <label class="form-label">Όνομα</label>
-                <input type="text" th:field="*{firstName}" class="form-control" />
-                <div class="error-message" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Επώνυμο</label>
-                <input type="text" th:field="*{lastName}" class="form-control" />
-                <div class="error-message" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" th:field="*{emailAddress}" class="form-control" />
-                <div class="error-message" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></div>
-            </div>
-
-            <!-- Password Field -->
-            <div class="form-group">
-                <label class="form-label" for="rawPassword">Κωδικός</label>
-                <div class="password-container">
-                    <input type="password" id="rawPassword" th:field="*{rawPassword}" class="form-control" required />
-                    <span class="togglePassword" data-target="rawPassword">
+               <!-- Password Field -->
+               <div class="form-group">
+                  <label class="form-label" for="rawPassword">Κωδικός</label>
+                  <div class="password-container">
+                     <input
+                        type="password"
+                        id="rawPassword"
+                        th:field="*{rawPassword}"
+                        class="form-control"
+                        required
+                     />
+                     <span class="togglePassword" data-target="rawPassword">
                         <i class="fas fa-eye-slash"></i>
-                    </span>
-                </div>
-                <div class="error-message" th:if="${#fields.hasErrors('rawPassword')}" th:errors="*{rawPassword}"></div>
-            </div>
+                     </span>
+                  </div>
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('rawPassword')}"
+                     th:errors="*{rawPassword}"
+                  ></div>
+               </div>
 
-            <!-- Confirm Password Field -->
-            <div class="form-group">
-                <label class="form-label" for="rawPasswordConfirm">Επιβεβαίωση Κωδικού</label>
-                <div class="password-container">
-                    <input type="password" id="rawPasswordConfirm" name="rawPasswordConfirm" class="form-control" required />
-                    <span class="togglePassword" data-target="rawPasswordConfirm">
+               <!-- Confirm Password Field -->
+               <div class="form-group">
+                  <label class="form-label" for="rawPasswordConfirm"
+                     >Επιβεβαίωση Κωδικού</label
+                  >
+                  <div class="password-container">
+                     <input
+                        type="password"
+                        id="rawPasswordConfirm"
+                        name="rawPasswordConfirm"
+                        class="form-control"
+                        required
+                     />
+                     <span
+                        class="togglePassword"
+                        data-target="rawPasswordConfirm"
+                     >
                         <i class="fas fa-eye-slash"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="confirmPasswordError" style="display: none;">
-                    Οι κωδικοί δεν ταιριάζουν.
-                </div>
-            </div>
+                     </span>
+                  </div>
+                  <div
+                     class="error-message"
+                     id="confirmPasswordError"
+                     style="display: none"
+                  >
+                     Οι κωδικοί δεν ταιριάζουν.
+                  </div>
+               </div>
 
-            <button type="submit" class="btn btn-block">Εγγραφή</button>
-        </form>
+               <button type="submit" class="btn btn-block">Εγγραφή</button>
+            </form>
 
-        <p class="text-center" style="margin-top: 20px;">
-            Έχετε ήδη λογαριασμό; <a th:href="@{/login}" style="color: var(--primary-color);">Συνδεθείτε</a>
-        </p>
-    </div>
+            <p class="text-center" style="margin-top: 20px">
+               Έχετε ήδη λογαριασμό;
+               <a th:href="@{/login}" style="color: var(--primary-color)"
+                  >Συνδεθείτε</a
+               >
+            </p>
+         </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Logic for toggling password visibility
-            document.querySelectorAll('.togglePassword').forEach(span => {
-                span.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const targetInput = document.getElementById(targetId);
-                    const icon = this.querySelector('i');
+         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+               // Logic for toggling password visibility
+               document.querySelectorAll(".togglePassword").forEach((span) => {
+                  span.addEventListener("click", function () {
+                     const targetId = this.getAttribute("data-target");
+                     const targetInput = document.getElementById(targetId);
+                     const icon = this.querySelector("i");
 
-                    // Toggle password visibility and icon
-                    togglePassword.addEventListener('click', () => {
-                        const isPassword = passwordInput.type === 'password';
-                        passwordInput.type = isPassword ? 'text' : 'password';
+                     // Toggle password visibility and icon
+                     togglePassword.addEventListener("click", () => {
+                        const isPassword = passwordInput.type === "password";
+                        passwordInput.type = isPassword ? "text" : "password";
 
-                        const icon = togglePassword.querySelector('i');
-                        icon.classList.remove(isPassword ? 'bxs-lock-alt' : 'bxs-lock-open-alt');
-                        icon.classList.add(isPassword ? 'bxs-lock-open-alt' : 'bxs-lock-alt');
-                    });
-                });
+                        const icon = togglePassword.querySelector("i");
+                        icon.classList.remove(
+                           isPassword ? "bxs-lock-alt" : "bxs-lock-open-alt"
+                        );
+                        icon.classList.add(
+                           isPassword ? "bxs-lock-open-alt" : "bxs-lock-alt"
+                        );
+                     });
+                  });
+               });
+
+               // Password confirmation validation
+               const form = document.getElementById("registrationForm");
+               const password = document.getElementById("rawPassword");
+               const confirmPassword =
+                  document.getElementById("rawPasswordConfirm");
+               const errorDiv = document.getElementById("confirmPasswordError");
+
+               form.addEventListener("submit", function (event) {
+                  if (password.value !== confirmPassword.value) {
+                     event.preventDefault();
+                     errorDiv.style.display = "block";
+                     confirmPassword.style.borderColor = "#d62828"; // Using var(--primary-color) value directly or via class
+                  } else {
+                     errorDiv.style.display = "none";
+                     confirmPassword.style.borderColor = "#ddd";
+                  }
+               });
+
+               confirmPassword.addEventListener("input", function () {
+                  if (password.value === confirmPassword.value) {
+                     errorDiv.style.display = "none";
+                     confirmPassword.style.borderColor = "#ddd";
+                  }
+               });
             });
-
-            // Password confirmation validation
-            const form = document.getElementById('registrationForm');
-            const password = document.getElementById('rawPassword');
-            const confirmPassword = document.getElementById('rawPasswordConfirm');
-            const errorDiv = document.getElementById('confirmPasswordError');
-
-            form.addEventListener('submit', function(event) {
-                if (password.value !== confirmPassword.value) {
-                    event.preventDefault();
-                    errorDiv.style.display = 'block';
-                    confirmPassword.style.borderColor = '#d62828'; // Using var(--primary-color) value directly or via class
-                } else {
-                    errorDiv.style.display = 'none';
-                    confirmPassword.style.borderColor = '#ddd';
-                }
-            });
-
-            confirmPassword.addEventListener('input', function() {
-                if (password.value === confirmPassword.value) {
-                    errorDiv.style.display = 'none';
-                    confirmPassword.style.borderColor = '#ddd';
-                }
-            });
-        });
-    </script>
-</main>
-
-</body>
+         </script>
+      </main>
+   </body>
 </html>

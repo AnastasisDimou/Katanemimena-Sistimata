@@ -1,111 +1,66 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-        lang="en"
-        dir="ltr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:title-pattern="$CONTENT_TITLE | MyCityGov">MyCityGov</title>
-    <!-- Google Font: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+   lang="en"
+   dir="ltr"
+>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title layout:title-pattern="$CONTENT_TITLE | MyCityGov">MyCityGov</title>
 
-    <!-- CUSTOM STYLES (Embedded for simplicity) -->
-    <style>
-        :root {
-            --primary-color: #d62828;
-            --light-color: #f4f4f6;
-            --dark-color: #111;
-        }
+      <!-- Google Font: Poppins -->
+      <link
+         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+         rel="stylesheet"
+      />
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--light-color);
-            color: #333;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+      <!-- Font Awesome Icons -->
+      <link
+         rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      />
 
-        /* Navbar */
-        .navbar { background: #fff; padding: 1rem 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .navbar .container {
-            max-width: 1100px; margin: 0 auto; padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { font-weight: 600; color: #333; transition: 0.3s; }
-        .nav-links a:hover { color: var(--primary-color); }
+      <!-- Global CSS from src/main/resources/static/style.css -->
+      <link rel="stylesheet" th:href="@{/style.css}" />
+   </head>
+   <body>
+      <!-- Navbar -->
+      <nav class="navbar">
+         <div class="container">
+            <a th:href="@{/**/}" class="logo">
+               <i class="fas fa-city"></i> MyCityGov
+            </a>
+            <ul class="nav-links">
+               <li sec:authorize="!isAuthenticated()">
+                  <a th:href="@{/login}">Σύνδεση</a>
+               </li>
+               <li sec:authorize="!isAuthenticated()">
+                  <a th:href="@{/register}">Εγγραφή</a>
+               </li>
+               <li sec:authorize="isAuthenticated()">
+                  <a th:href="@{/profile}">Προφίλ</a>
+               </li>
+               <li sec:authorize="isAuthenticated()">
+                  <a th:href="@{/tickets}">Αιτήματα</a>
+               </li>
+               <li sec:authorize="isAuthenticated()">
+                  <a th:href="@{/logout}">Έξοδος</a>
+               </li>
+            </ul>
+         </div>
+      </nav>
 
-        /* Main Content Area */
-        .content-main {
-            flex: 1; /* Pushes footer down */
-            max-width: 900px;
-            margin: 40px auto;
-            width: 100%;
-            padding: 0 20px;
-        }
+      <!-- Main Content Injection Point -->
+      <main layout:fragment="main" class="content-main">
+         <!-- Content from child pages will appear here -->
+      </main>
 
-        .card-box {
-            background: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        /* Forms */
-        .form-group { margin-bottom: 1.5rem; text-align: left; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-        .form-control, .form-select {
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem;
-        }
-        .btn {
-            display: inline-block; padding: 10px 25px; background: var(--primary-color);
-            color: #fff; border: 0; border-radius: 5px; cursor: pointer; font-weight: 600;
-        }
-        .btn:hover { opacity: 0.9; }
-        .btn-block { display: block; width: 100%; }
-        .text-center { text-align: center; }
-        .error-message { color: red; font-size: 0.9rem; margin-top: 5px; }
-
-        /* Footer */
-        .footer { background: var(--dark-color); color: #fff; padding: 2rem 0; text-align: center; margin-top: auto; }
-    </style>
-</head>
-<body>
-
-<!-- Navbar -->
-<nav class="navbar">
-    <div class="container">
-        <a th:href="@{/}" class="logo"><i class="fas fa-city"></i> MyCityGov</a>
-        <ul class="nav-links">
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Σύνδεση</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Εγγραφή</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Προφίλ</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/tickets}">Αιτήματα</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Έξοδος</a></li>
-        </ul>
-    </div>
-</nav>
-
-<!-- Main Content Injection Point -->
-<main layout:fragment="main" class="content-main">
-    <!-- Content from child pages will appear here -->
-</main>
-
-<!-- Footer -->
-<footer class="footer">
-    <p>&copy; 2025 Δήμος Χαροκοπείου | MyCityGov Platform</p>
-</footer>
-
-</body>
+      <!-- Footer -->
+      <footer class="footer">
+         <p>&copy; 2025 Δήμος Χαροκοπείου | MyCityGov Platform</p>
+      </footer>
+   </body>
 </html>

@@ -1,48 +1,71 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
-        layout:decorate="~{base}">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   xmlns:sec="http://www.w3.org/1999/xhtml"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Προφίλ</title>
+   </head>
 
-<head>
-    <title>Προφίλ</title>
-</head>
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <h1 class="text-xl text-center">Ο Λογαριασμός μου</h1>
+         <p class="text-md text-center" style="color: #666">
+            Καλώς ήρθατε, <b th:text="${me.firstName()}"></b>.
+         </p>
 
-<body>
-
-<main layout:fragment="main" class="content-main container-sm">
-
-    <h1 class="text-xl text-center">Ο Λογαριασμός μου</h1>
-    <p class="text-md text-center" style="color: #666;">
-        Καλώς ήρθατε, <b th:text="${me.firstName()}"></b>.
-    </p>
-
-    <div class="mt-4" style="border: 1px solid #eee; padding: 20px; border-radius: 5px;">
-        <h2 class="text-lg">Στοιχεία Χρήστη</h2>
-        <ul style="padding-left: 20px;">
-            <li><i class="fas fa-id-card"></i> <strong>ID:</strong> <span th:text="${me.id()}"></span></li>
-            <li><i class="fas fa-envelope"></i> <strong>Email:</strong> <span th:text="${me.emailAddress()}"></span></li>
-            <li><i class="fas fa-users-cog"></i> <strong>Ρόλος:</strong> <span th:text="${me.type().name()}"></span></li>
-            <li><i class="fas fa-address-card"></i> <strong>AΦM/AMKA:</strong> <span th:text="${me.idNumber()}"></span></li>
-        </ul>
-    </div>
-    <br>
-    <div class="mt-4" style="border: 1px solid #eee; padding: 20px; border-radius: 5px;">
-        <h2 class="text-lg">Ενέργειες</h2>
-        <ul style="padding-left: 20px;">
-            <li>
-                <a th:href="@{/tickets}" style="color: var(--primary-color);"><i class="fas fa-inbox"></i> Προβολή Αιτημάτων & Ραντεβού</a>
-            </li>
-            <li sec:authorize="hasRole('ADMIN')">
-                <a th:href="@{/admin/requests}"><i class="fas fa-chart-line"></i> Αναφορές Διαχειριστή</a>
-            </li>
-            <li>
-                <a th:href="@{/logout}" style="color: var(--primary-color);"><i class="fas fa-sign-out-alt"></i> Αποσύνδεση</a>
-            </li>
-        </ul>
-    </div>
-
-</main>
-
-</body>
+         <div
+            class="mt-4"
+            style="border: 1px solid #eee; padding: 20px; border-radius: 5px"
+         >
+            <h2 class="text-lg">Στοιχεία Χρήστη</h2>
+            <ul style="padding-left: 20px">
+               <li>
+                  <i class="fas fa-id-card"></i> <strong>ID:</strong>
+                  <span th:text="${me.id()}"></span>
+               </li>
+               <li>
+                  <i class="fas fa-envelope"></i> <strong>Email:</strong>
+                  <span th:text="${me.emailAddress()}"></span>
+               </li>
+               <li>
+                  <i class="fas fa-users-cog"></i> <strong>Ρόλος:</strong>
+                  <span th:text="${me.type().name()}"></span>
+               </li>
+               <li>
+                  <i class="fas fa-address-card"></i>
+                  <strong>AΦM/AMKA:</strong>
+                  <span th:text="${me.idNumber()}"></span>
+               </li>
+            </ul>
+         </div>
+         <br />
+         <div
+            class="mt-4"
+            style="border: 1px solid #eee; padding: 20px; border-radius: 5px"
+         >
+            <h2 class="text-lg">Ενέργειες</h2>
+            <ul style="padding-left: 20px">
+               <li>
+                  <a th:href="@{/tickets}" style="color: var(--primary-color)"
+                     ><i class="fas fa-inbox"></i> Προβολή Αιτημάτων &
+                     Ραντεβού</a
+                  >
+               </li>
+               <li sec:authorize="hasRole('ADMIN')">
+                  <a th:href="@{/admin/requests}"
+                     ><i class="fas fa-chart-line"></i> Αναφορές Διαχειριστή</a
+                  >
+               </li>
+               <li>
+                  <a th:href="@{/logout}" style="color: var(--primary-color)"
+                     ><i class="fas fa-sign-out-alt"></i> Αποσύνδεση</a
+                  >
+               </li>
+            </ul>
+         </div>
+      </main>
+   </body>
 </html>

@@ -1,63 +1,73 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{base}">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Αιτήματα & Ραντεβού</title>
+   </head>
 
-<head>
-    <title>Αιτήματα & Ραντεβού</title>
-</head>
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <h1 class="text-xl">Τα Αιτήματά/Ραντεβού μου</h1>
+         <div class="mb-4">
+            <a th:href="@{/profile}" class="text-sm" style="color: #666">
+               <i class="fas fa-user-circle"></i> Συνδεδεμένος ως:
+               <b
+                  th:text="${me.emailAddress()} + ' (' + ${me.type()} + ')'"
+               ></b>
+            </a>
+         </div>
+         <br />
+         <!-- User (Citizen) Action -->
+         <div th:if="${me.type().name() == 'CITIZEN'}" class="mb-4">
+            <a th:href="@{/tickets/new}" class="btn btn-primary text-md"
+               ><i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος /
+               Ραντεβού</a
+            >
+         </div>
 
-<body>
+         <br />
+         <h2 class="text-lg">Λίστα Αιτημάτων</h2>
 
-<main layout:fragment="main" class="content-main container-sm">
-
-    <h1 class="text-xl">Τα Αιτήματά/Ραντεβού μου</h1>
-    <div class="mb-4">
-        <a th:href="@{/profile}" class="text-sm" style="color: #666;">
-            <i class="fas fa-user-circle"></i> Συνδεδεμένος ως: <b th:text="${me.emailAddress()} + ' (' + ${me.type()} + ')'"></b>
-        </a>
-    </div>
-    <br>
-    <!-- User (Citizen) Action -->
-    <div th:if="${me.type().name() == 'CITIZEN'}" class="mb-4">
-        <a th:href="@{/tickets/new}" class="btn btn-primary text-md"><i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος / Ραντεβού</a>
-    </div>
-
-    <br>
-    <h2 class="text-lg">Λίστα Αιτημάτων</h2>
-
-    <div style="overflow-x: auto;">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID&emsp;</th>
-                <th>Πρωτόκολλο&emsp;</th>
-                <th>Κατάσταση&emsp;</th>
-                <th>Θέμα&emsp;</th>
-                <th>Υπηρεσία&emsp;</th>
-                <th>Υποβολή&emsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="r : ${requests}">
-                <td>
-                    <a th:href="@{|/tickets/${r.id()}|}" style="color: #d62828;" th:text="${r.id()}"></a>
-                </td>
-                <td th:text="${r.protocolNumber()}"></td>
-                <td th:text="${r.status().name()}"></td>
-                <td th:text="${r.subject()}"></td>
-                <td th:text="${r.department().name()}"></td>
-                <td th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}"></td>
-            </tr>
-            <tr th:if="${requests == null || requests.isEmpty()}">
-                <td colspan="6" class="text-center" style="color: #666;">Δεν βρέθηκαν καταχωρημένα αιτήματα.</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-</main>
-
-</body>
+         <div style="overflow-x: auto">
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th>ID&emsp;</th>
+                     <th>Πρωτόκολλο&emsp;</th>
+                     <th>Κατάσταση&emsp;</th>
+                     <th>Θέμα&emsp;</th>
+                     <th>Υπηρεσία&emsp;</th>
+                     <th>Υποβολή&emsp;</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="r : ${requests}">
+                     <td>
+                        <a
+                           th:href="@{|/tickets/${r.id()}|}"
+                           style="color: #d62828"
+                           th:text="${r.id()}"
+                        ></a>
+                     </td>
+                     <td th:text="${r.protocolNumber()}"></td>
+                     <td th:text="${r.status().name()}"></td>
+                     <td th:text="${r.subject()}"></td>
+                     <td th:text="${r.department().name()}"></td>
+                     <td
+                        th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}"
+                     ></td>
+                  </tr>
+                  <tr th:if="${requests == null || requests.isEmpty()}">
+                     <td colspan="6" class="text-center" style="color: #666">
+                        Δεν βρέθηκαν καταχωρημένα αιτήματα.
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </main>
+   </body>
 </html>

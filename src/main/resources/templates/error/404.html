@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{base}">
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Δεν Βρέθηκε (404)</title>
+   </head>
 
-<head>
-    <title>Δεν Βρέθηκε (404)</title>
-</head>
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <div
+            class="card-box text-center"
+            style="max-width: 600px; margin: 50px auto"
+         >
+            <h1
+               style="
+                  font-size: 4rem;
+                  color: var(--primary-color);
+                  margin-bottom: 10px;
+               "
+            >
+               404
+            </h1>
+            <h2 class="text-xl mb-4">Η σελίδα δεν βρέθηκε</h2>
 
-<body>
+            <p class="text-md" style="color: #666; margin-bottom: 30px">
+               Η διαδρομή
+               <code
+                  th:text="${path}"
+                  style="background: #eee; padding: 2px 5px; border-radius: 3px"
+               ></code>
+               δεν υπάρχει.
+            </p>
 
-<main layout:fragment="main" class="content-main container-sm">
-    <div class="card-box text-center" style="max-width: 600px; margin: 50px auto;">
-        <h1 style="font-size: 4rem; color: var(--primary-color); margin-bottom: 10px;">404</h1>
-        <h2 class="text-xl mb-4">Η σελίδα δεν βρέθηκε</h2>
-
-        <p class="text-md" style="color: #666; margin-bottom: 30px;">
-            Η διαδρομή <code th:text="${path}" style="background: #eee; padding: 2px 5px; border-radius: 3px;"></code> δεν υπάρχει.
-        </p>
-
-        <div class="mt-4">
-            <a th:href="@{/}" class="btn btn-dark text-md">
-                <i class="fas fa-home"></i> Επιστροφή στην Αρχική
-            </a>
-        </div>
-    </div>
-</main>
-
-</body>
+            <div class="mt-4">
+               <a th:href="@{/}" class="btn btn-dark text-md">
+                  <i class="fas fa-home"></i> Επιστροφή στην Αρχική
+               </a>
+            </div>
+         </div>
+      </main>
+   </body>
 </html>
