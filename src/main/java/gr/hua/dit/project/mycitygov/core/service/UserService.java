@@ -1,22 +1,17 @@
 package gr.hua.dit.project.mycitygov.core.service;
 
-import gr.hua.dit.project.mycitygov.core.port.repository.UserRepository;
-import gr.hua.dit.project.mycitygov.core.model.User;
-
-import org.springframework.stereotype.Service;
+import gr.hua.dit.project.mycitygov.core.service.model.CreateUserRequest;
+import gr.hua.dit.project.mycitygov.core.service.model.UserView;
 
 import java.util.List;
 
-@Service
-public class UserService {
-   private final UserRepository userRepository;
+/**
+ * Service (contract) for managing user types
+ */
+public interface UserService {
 
-   public UserService(UserRepository userRepository) {
-      this.userRepository = userRepository;
-   }
+   List<UserView> getUsers();
 
-   public List<User> getAllUsers() {
-      return userRepository.findAll();
-   }
+   UserView createUser(CreateUserRequest createUserRequest);
 
 }
