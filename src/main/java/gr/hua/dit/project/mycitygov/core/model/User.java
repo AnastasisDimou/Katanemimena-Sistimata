@@ -34,8 +34,8 @@ public class User {
    @Column(name = "phone_number", nullable = false, unique = true, length = 18)
    private String phoneNumber;
 
-   @Column(name = "password_hash", nullable = false)
-   private String passwordHash;
+   @Column(name = "raw_password", nullable = false)
+   private String rawPassword;
 
    @Enumerated(EnumType.STRING)
    @Column(nullable = false, length = 20)
@@ -62,7 +62,7 @@ public class User {
       this.lastName = lastName;
       this.email = email;
       this.phoneNumber = phoneNumber;
-      this.passwordHash = passwordHash;
+      this.rawPassword = rawPassword;
       this.userType = userType;
       this.createdAt = Instant.now();
    }

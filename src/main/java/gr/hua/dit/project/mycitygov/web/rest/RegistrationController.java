@@ -1,27 +1,30 @@
 package gr.hua.dit.project.mycitygov.web.rest;
 
+import gr.hua.dit.project.mycitygov.core.model.ServiceDepartment;
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
 import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
+import gr.hua.dit.project.mycitygov.core.service.UserService;
+import gr.hua.dit.project.mycitygov.core.service.model.CreateUserRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-/*
+/**
  * UI Controller for managing citizen/employee/admin registration.
  */
 @Controller
 public class RegistrationController {
 
 
-    private final UserRepository userRepository;
+    private final UserService userRepository;
 
-    public RegistrationController(UserRepository userRepository) {
-        if (userRepository == null) throw new IllegalArgumentException(
+    public RegistrationController(UserService userService) {
+        if (userService == null) throw new IllegalArgumentException(
                 "userRepository cannot be null");
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     /*
@@ -31,9 +34,10 @@ public class RegistrationController {
     public String showRegistrationForm(final Model model) {
         // TODO if user is authenticated, redirect to tickets
         // Inital data for the form.
-        model.addAttribute("user", new User(null, "", "",
-                "", "", "", "",
-                "", UserType.CITIZEN));
+        model.addAttribute("user", new CreateUserRequest(
+                null, "", "",
+                "", "", "",
+                "", UserType.CITIZEN, ServiceDepartment.));
         return "register"; // the name of the thymeleaf/HTML template.
     }
 
