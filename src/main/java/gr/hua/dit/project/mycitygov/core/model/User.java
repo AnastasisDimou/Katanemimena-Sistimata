@@ -9,7 +9,7 @@ import java.time.Instant;
  * Person entity.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "app_users")
 public class User {
 
    @Id
