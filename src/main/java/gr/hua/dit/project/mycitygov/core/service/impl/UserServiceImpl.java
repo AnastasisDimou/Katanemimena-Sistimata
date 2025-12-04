@@ -4,9 +4,13 @@ import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
 import gr.hua.dit.project.mycitygov.core.port.repository.UserRepository;
 import gr.hua.dit.project.mycitygov.core.service.UserService;
+import gr.hua.dit.project.mycitygov.core.service.mapper.UserMapper;
 import gr.hua.dit.project.mycitygov.core.service.model.CreateUserRequest;
+import gr.hua.dit.project.mycitygov.core.service.model.CreateUserResult;
 import gr.hua.dit.project.mycitygov.core.service.model.UserView;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 
@@ -17,8 +21,16 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(final UserRepository userRepository) {
+
+
+    public UserServiceImpl(final UserRepository userRepository,
+                           final PasswordEncoder passwordEncoder,
+                           final UserMapper userMapper) {
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
         if (userRepository == null)
             throw new IllegalArgumentException("UserRepository cannot be null");
         this.userRepository = userRepository;
@@ -30,9 +42,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserView createUser(final CreateUserRequest createUserRequest) {
+    public CreateUserResult createUser(final CreateUserRequest createUserRequest) {
         if (createUserRequest == null)
-            throw new IllegalArgumentException("createUserRequest cannot be null");
+            return CreateUserResult.fail("Request cannot be null");
 
         // Unpack
         final String afm = createUserRequest.afm().strip();
@@ -45,7 +57,7 @@ public class UserServiceImpl implements UserService {
         final UserType type = createUserRequest.type();
 
         // Encode password (raw to hashed).
-        final String hashedPassword = rawPassword;
+        final String hashedPassword = this.passwordEncoder.encode(rawPassword);
 
         User user = new User();
         user.setId(null); // auto-generated
@@ -62,8 +74,7 @@ public class UserServiceImpl implements UserService {
         user = this.userRepository.save(user);
 
         // Map user to UserView
-        final UserView userView = new UserView();
-
-        return userView;
+        final UserView userView = this.userMapper.convertUserToUserView(user);
+        return CreateUserResult.success(userView);
     }
 }

@@ -1,6 +1,7 @@
 package gr.hua.dit.project.mycitygov.core.service;
 
 import gr.hua.dit.project.mycitygov.core.service.model.CreateUserRequest;
+import gr.hua.dit.project.mycitygov.core.service.model.CreateUserResult;
 import gr.hua.dit.project.mycitygov.core.service.model.UserView;
 
 import java.util.List;
@@ -12,6 +13,6 @@ public interface UserService {
 
    List<UserView> getUsers();
 
-   UserView createUser(CreateUserRequest createUserRequest);
+    CreateUserResult createUser(final CreateUserRequest createUserRequest);
 
 }

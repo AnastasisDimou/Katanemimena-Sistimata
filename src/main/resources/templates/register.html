@@ -29,29 +29,36 @@
                   th:text="${errorMessage}"
                ></div>
 
-               <div class="form-group">
-                  <label class="form-label">Είμαι:</label>
-                  <select th:field="*{type}" class="form-select">
-                     <option value="CITIZEN">Πολίτης</option>
-                     <option value="EMPLOYEE">Υπάλληλος</option>
-                     <option value="ADMIN">Διαχειριστής</option>
-                  </select>
-               </div>
 
                <div class="form-group">
-                  <label class="form-label">ΑΦΜ / ΑΜΚΑ</label>
+                  <label class="form-label">ΑΦΜ</label>
                   <input
                      type="text"
-                     th:field="*{idNumber}"
+                     th:field="*{afm}"
                      class="form-control"
                      placeholder="123456789"
                   />
                   <div
                      class="error-message"
                      th:if="${#fields.hasErrors('idNumber')}"
-                     th:errors="*{idNumber}"
+                     th:errors="*{afm}"
                   ></div>
                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ΑΜΚΑ</label>
+                    <input
+                            type="text"
+                            th:field="*{amka}"
+                            class="form-control"
+                            placeholder="123456789"
+                    />
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('idNumber')}"
+                            th:errors="*{amka}"
+                    ></div>
+                </div>
 
                <div class="form-group">
                   <label class="form-label">Όνομα</label>
@@ -85,13 +92,13 @@
                   <label class="form-label">Email</label>
                   <input
                      type="email"
-                     th:field="*{emailAddress}"
+                     th:field="*{email}"
                      class="form-control"
                   />
                   <div
                      class="error-message"
                      th:if="${#fields.hasErrors('emailAddress')}"
-                     th:errors="*{emailAddress}"
+                     th:errors="*{email}"
                   ></div>
                </div>
 
