@@ -29,7 +29,7 @@
                   th:text="${errorMessage}"
                ></div>
 
-
+               <!-- AFM -->
                <div class="form-group">
                   <label class="form-label">ΑΦΜ</label>
                   <input
@@ -40,26 +40,28 @@
                   />
                   <div
                      class="error-message"
-                     th:if="${#fields.hasErrors('idNumber')}"
+                     th:if="${#fields.hasErrors('afm')}"
                      th:errors="*{afm}"
                   ></div>
                </div>
 
-                <div class="form-group">
-                    <label class="form-label">ΑΜΚΑ</label>
-                    <input
-                            type="text"
-                            th:field="*{amka}"
-                            class="form-control"
-                            placeholder="123456789"
-                    />
-                    <div
-                            class="error-message"
-                            th:if="${#fields.hasErrors('idNumber')}"
-                            th:errors="*{amka}"
-                    ></div>
-                </div>
+               <!-- AMKA -->
+               <div class="form-group">
+                  <label class="form-label">ΑΜΚΑ</label>
+                  <input
+                     type="text"
+                     th:field="*{amka}"
+                     class="form-control"
+                     placeholder="12345678901"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('amka')}"
+                     th:errors="*{amka}"
+                  ></div>
+               </div>
 
+               <!-- First name -->
                <div class="form-group">
                   <label class="form-label">Όνομα</label>
                   <input
@@ -74,6 +76,7 @@
                   ></div>
                </div>
 
+               <!-- Last name -->
                <div class="form-group">
                   <label class="form-label">Επώνυμο</label>
                   <input
@@ -88,6 +91,7 @@
                   ></div>
                </div>
 
+               <!-- Email -->
                <div class="form-group">
                   <label class="form-label">Email</label>
                   <input
@@ -97,8 +101,24 @@
                   />
                   <div
                      class="error-message"
-                     th:if="${#fields.hasErrors('emailAddress')}"
+                     th:if="${#fields.hasErrors('email')}"
                      th:errors="*{email}"
+                  ></div>
+               </div>
+
+               <!-- Phone number -->
+               <div class="form-group">
+                  <label class="form-label">Τηλέφωνο</label>
+                  <input
+                     type="text"
+                     th:field="*{phoneNumber}"
+                     class="form-control"
+                     placeholder="6912345678"
+                  />
+                  <div
+                     class="error-message"
+                     th:if="${#fields.hasErrors('phoneNumber')}"
+                     th:errors="*{phoneNumber}"
                   ></div>
                </div>
 
@@ -126,9 +146,9 @@
 
                <!-- Confirm Password Field -->
                <div class="form-group">
-                  <label class="form-label" for="rawPasswordConfirm"
-                     >Επιβεβαίωση Κωδικού</label
-                  >
+                  <label class="form-label" for="rawPasswordConfirm">
+                     Επιβεβαίωση Κωδικού
+                  </label>
                   <div class="password-container">
                      <input
                         type="password"
@@ -158,34 +178,26 @@
 
             <p class="text-center" style="margin-top: 20px">
                Έχετε ήδη λογαριασμό;
-               <a th:href="@{/login}" style="color: var(--primary-color)"
-                  >Συνδεθείτε</a
-               >
+               <a th:href="@{/login}" style="color: var(--primary-color)">
+                  Συνδεθείτε
+               </a>
             </p>
          </div>
 
          <script>
             document.addEventListener("DOMContentLoaded", function () {
-               // Logic for toggling password visibility
+               // Toggle password visibility for both fields
                document.querySelectorAll(".togglePassword").forEach((span) => {
                   span.addEventListener("click", function () {
                      const targetId = this.getAttribute("data-target");
                      const targetInput = document.getElementById(targetId);
                      const icon = this.querySelector("i");
 
-                     // Toggle password visibility and icon
-                     togglePassword.addEventListener("click", () => {
-                        const isPassword = passwordInput.type === "password";
-                        passwordInput.type = isPassword ? "text" : "password";
+                     const isPassword = targetInput.type === "password";
+                     targetInput.type = isPassword ? "text" : "password";
 
-                        const icon = togglePassword.querySelector("i");
-                        icon.classList.remove(
-                           isPassword ? "bxs-lock-alt" : "bxs-lock-open-alt"
-                        );
-                        icon.classList.add(
-                           isPassword ? "bxs-lock-open-alt" : "bxs-lock-alt"
-                        );
-                     });
+                     icon.classList.toggle("fa-eye");
+                     icon.classList.toggle("fa-eye-slash");
                   });
                });
 
@@ -200,7 +212,7 @@
                   if (password.value !== confirmPassword.value) {
                      event.preventDefault();
                      errorDiv.style.display = "block";
-                     confirmPassword.style.borderColor = "#d62828"; // Using var(--primary-color) value directly or via class
+                     confirmPassword.style.borderColor = "#d62828";
                   } else {
                      errorDiv.style.display = "none";
                      confirmPassword.style.borderColor = "#ddd";

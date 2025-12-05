@@ -13,6 +13,6 @@ public interface UserService {
 
    List<UserView> getUsers();
 
-    CreateUserResult createUser(final CreateUserRequest createUserRequest);
+   CreateUserResult createUser(final CreateUserRequest createUserRequest);
 
 }

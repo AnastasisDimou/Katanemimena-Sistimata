@@ -1,6 +1,5 @@
 package gr.hua.dit.project.mycitygov.core.service.model;
 
-
 import gr.hua.dit.project.mycitygov.core.model.ServiceDepartment;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
 
@@ -15,8 +14,8 @@ public record UserView(
         String lastName,
         String email,
         UserType type,
-        ServiceDepartment serviceDepartment
-) {
+        ServiceDepartment serviceDepartment) {
+
     public String fullName() {
         return this.firstName + " " + this.lastName;
     }
