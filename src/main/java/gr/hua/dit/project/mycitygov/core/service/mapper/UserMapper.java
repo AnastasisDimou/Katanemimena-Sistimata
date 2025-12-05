@@ -23,7 +23,6 @@ public class UserMapper {
                 user.getLastName(),
                 user.getEmail(),
                 user.getUserType(),
-                user.getServiceDepartment()
-        );
+                user.getServiceDepartment());
     }
 }
