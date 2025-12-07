@@ -100,6 +100,10 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
          return CreateUserResult.fail("Το ΑΜΚΑ χρησιμοποιείται ήδη.");
       }
 
+      if (this.userRepository.existsByPhoneNumber(phoneNumber)) {
+         return CreateUserResult.fail("Ο αριθμός τηλεφώνου χρησιμοποιείται ήδη.");
+      }
+
       // Hash password
       final String hashedPassword = this.passwordEncoder.encode(rawPassword);
 
