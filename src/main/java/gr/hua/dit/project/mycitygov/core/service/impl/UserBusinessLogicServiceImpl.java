@@ -2,7 +2,7 @@ package gr.hua.dit.project.mycitygov.core.service.impl;
 
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
-import gr.hua.dit.project.mycitygov.core.port.repository.UserRepository;
+import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
 import gr.hua.dit.project.mycitygov.core.service.UserBusinessLogicService;
 import gr.hua.dit.project.mycitygov.core.service.mapper.UserMapper;
 import gr.hua.dit.project.mycitygov.core.service.model.CreateUserRequest;

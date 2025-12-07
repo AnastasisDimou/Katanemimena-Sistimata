@@ -1,4 +1,4 @@
-package gr.hua.dit.project.mycitygov.core.port.repository;
+package gr.hua.dit.project.mycitygov.core.repository;
 
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;

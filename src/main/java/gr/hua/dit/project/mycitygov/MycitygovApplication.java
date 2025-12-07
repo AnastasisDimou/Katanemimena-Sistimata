@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
-import gr.hua.dit.project.mycitygov.core.port.repository.UserRepository;
+import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
 
 @SpringBootApplication
 public class MycitygovApplication {
