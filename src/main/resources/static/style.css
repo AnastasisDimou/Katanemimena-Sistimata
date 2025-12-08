@@ -156,3 +156,37 @@ ul {
    text-align: center;
    margin-top: auto;
 }
+
+
+.password-container {
+    position: relative !important; /* Forces container to be the anchor */
+    width: 100%;
+    display: block;
+}
+
+.password-container input.form-control {
+    width: 100%;
+    padding-right: 45px; /* Leaves space for the icon */
+    display: block;
+}
+
+.togglePassword {
+    position: absolute !important; /* Forces icon to float over input */
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%); /* Centers vertically */
+    z-index: 10;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #666;
+    display: inline-flex; /* Ensures icon is treated as a flex item */
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Match height of container to help centering */
+    max-height: 40px; /* Limit height */
+}
+
+.togglePassword:hover {
+    color: var(--dark-color);
+    cursor: pointer;
+}
