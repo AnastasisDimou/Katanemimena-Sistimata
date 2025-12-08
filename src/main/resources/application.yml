@@ -44,5 +44,5 @@ springdoc:
 
 # Mock External Service URL
 external:
-   service:
+   api:
       base-url: http://localhost:8081
