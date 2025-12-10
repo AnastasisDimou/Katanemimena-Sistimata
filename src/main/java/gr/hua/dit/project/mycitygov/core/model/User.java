@@ -124,7 +124,7 @@ public class User {
       this.phoneNumber = phoneNumber;
    }
 
-   public String getPasswordHash() {
+   public String getPassword() {
       return passwordHash;
    }
 

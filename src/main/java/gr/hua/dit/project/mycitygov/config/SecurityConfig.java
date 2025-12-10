@@ -21,6 +21,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+
+      /**
+       * UI chain {@code "/**"} (stateful - cookie based).
+       */
       @Bean
       @Order(1)
       public SecurityFilterChain uiChain(final HttpSecurity http) throws Exception {
@@ -39,14 +43,14 @@ public class SecurityConfig {
                                     .anyRequest().permitAll())
 
                         .formLogin(form -> form
-                                    .loginPage("/login")
-                                    .loginProcessingUrl("/login")
+                                    .loginPage("/login") // custom login page (page.html)
+                                    .loginProcessingUrl("/login") // POST request target (handled by Spring Security)
                                     .defaultSuccessUrl("/profile", true)
                                     .failureUrl("/login?error")
                                     .permitAll())
 
                         .logout(logout -> logout
-                                    .logoutUrl("/logout")
+                                    .logoutUrl("/logout") // POST request target (handled by Spring Security)
                                     .logoutSuccessUrl("/login?logout")
                                     .deleteCookies("JSESSIONID")
                                     .invalidateHttpSession(true)
