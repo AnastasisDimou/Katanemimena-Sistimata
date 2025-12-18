@@ -1,6 +1,5 @@
 package gr.hua.dit.project.mycitygov.core.security;
 
-import gr.hua.dit.project.mycitygov.core.security.ApplicationUserDetails;
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
