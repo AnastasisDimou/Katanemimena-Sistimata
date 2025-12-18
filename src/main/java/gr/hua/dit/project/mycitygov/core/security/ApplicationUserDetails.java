@@ -14,28 +14,16 @@ import java.util.Collections;
  */
 public final class ApplicationUserDetails implements UserDetails {
 
-   // // ADDED: Serial Version UID to prevent InvalidClassException during session
-   // deserialization updates
-   // @Serial
-   // private static final long serialVersionUID = 1L;
-
    private final long userId;
-   private final String afm;
-   private final String amka;
    private final String email;
    private final String hashedPassword;
    private final UserType type;
-   private final String firstName;
-   private final String lastName;
 
-   public ApplicationUserDetails(final long userId,
-         final String afm,
-         final String amka,
+   public ApplicationUserDetails(
+         final long userId,
          final String email,
          final String hashedPassword,
-         final UserType type,
-         final String firstName,
-         final String lastName) {
+         final UserType type) {
       if (userId <= 0)
          throw new IllegalArgumentException("User ID must be positive");
       if (email == null || email.isBlank())
@@ -46,33 +34,13 @@ public final class ApplicationUserDetails implements UserDetails {
          throw new NullPointerException("UserType cannot be null");
 
       this.userId = userId;
-      this.afm = afm;
-      this.amka = amka;
       this.email = email;
       this.hashedPassword = hashedPassword;
       this.type = type;
-      this.firstName = firstName;
-      this.lastName = lastName;
    }
 
    public long userId() {
       return this.userId;
-   }
-
-   public String afm() {
-      return this.afm;
-   }
-
-   public String amka() {
-      return this.amka;
-   }
-
-   public String firstName() {
-      return this.firstName;
-   }
-
-   public String lastName() {
-      return this.lastName;
    }
 
    public UserType type() {
