@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class RestApiClientConfig {
-   @Value("${external.api.base-url}")
+   @Value("${external.service.base-url}")
    private String baseUrl;
 
    public String getBaseUrl() {
