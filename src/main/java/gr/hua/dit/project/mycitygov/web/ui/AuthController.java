@@ -33,7 +33,7 @@ public class AuthController {
     @GetMapping("/logout")
     public String logout(final Authentication authentication) {
         if (AuthUtils.isAuthenticated(authentication)) {
-            return "redirect:/profile";
+            return "redirect:/login";
         }
         return "logout";
     }
