@@ -29,7 +29,7 @@ public class MycitygovApplication {
 					"Papadopoulos", // lastName
 					"citizen@example.com",
 					"6912345678", // phoneNumber
-					"dev-password-hash",
+					"password",
 					UserType.CITIZEN);
 
 			User employee = new User(
@@ -40,7 +40,7 @@ public class MycitygovApplication {
 					"Ioannou",
 					"employee@example.com",
 					"6987654321",
-					"dev-password-hash",
+					"password",
 					UserType.EMPLOYEE);
 
 			User admin = new User(
@@ -51,7 +51,7 @@ public class MycitygovApplication {
 					"User",
 					"admin@example.com",
 					"6999999999",
-					"dev-password-hash",
+					"password",
 					UserType.ADMIN);
 
 			userRepository.save(citizen);
