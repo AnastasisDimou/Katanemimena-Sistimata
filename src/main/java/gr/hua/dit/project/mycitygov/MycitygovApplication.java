@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
@@ -17,9 +18,11 @@ public class MycitygovApplication {
 	}
 
 	@Bean
-	CommandLineRunner initUsers(UserRepository userRepository) {
+	CommandLineRunner initUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 			userRepository.deleteAll();
+
+			String hash = passwordEncoder.encode("password");
 
 			User citizen = new User(
 					null,
@@ -29,7 +32,7 @@ public class MycitygovApplication {
 					"Papadopoulos", // lastName
 					"citizen@example.com",
 					"6912345678", // phoneNumber
-					"password",
+					hash,
 					UserType.CITIZEN);
 
 			User employee = new User(
@@ -40,7 +43,7 @@ public class MycitygovApplication {
 					"Ioannou",
 					"employee@example.com",
 					"6987654321",
-					"password",
+					hash,
 					UserType.EMPLOYEE);
 
 			User admin = new User(
@@ -51,7 +54,7 @@ public class MycitygovApplication {
 					"User",
 					"admin@example.com",
 					"6999999999",
-					"password",
+					hash,
 					UserType.ADMIN);
 
 			userRepository.save(citizen);
