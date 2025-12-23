@@ -26,6 +26,8 @@ public class SecurityConfig {
       public SecurityFilterChain uiChain(final HttpSecurity http) throws Exception {
             http
                         .securityMatcher("/**")
+                        .csrf(csrf -> csrf
+                                    .ignoringRequestMatchers("/auth/gov/login"))
 
                         .authorizeHttpRequests(auth -> auth
                                     // Public endpoints (no login required)
