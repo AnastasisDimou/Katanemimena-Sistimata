@@ -5,7 +5,7 @@
    layout:decorate="~{base}"
 >
    <head>
-      <title>Σύνδεση</title>
+      <title>Σύνδεση με Gov</title>
 
       <link rel="stylesheet" th:href="@{/style.css}" />
 
@@ -21,9 +21,9 @@
             class="card-box text-center"
             style="max-width: 500px; margin: 0 auto"
          >
-            <h1 style="margin-bottom: 20px">Σύνδεση Χρήστη</h1>
+            <h1 style="margin-bottom: 20px">Σύνδεση με Gov</h1>
 
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/auth/gov/login}" method="post">
                <input
                   type="hidden"
                   th:if="${_csrf != null}"
@@ -32,47 +32,55 @@
                />
 
                <div
-                  th:if="${param.error}"
+                  th:if="${param.govError}"
                   class="error-message"
                   style="margin-bottom: 15px"
                >
-                  Λάθος email ή κωδικός.
+                  Μη έγκυρα στοιχεία Gov (ΑΦΜ ή PIN).
                </div>
 
                <div
-                  th:if="${param.logout}"
-                  style="color: green; margin-bottom: 15px"
+                  th:if="${param.govUnavailable}"
+                  class="error-message"
+                  style="margin-bottom: 15px"
                >
-                  Αποσυνδεθήκατε επιτυχώς.
+                  Η υπηρεσία Gov δεν είναι διαθέσιμη αυτή τη στιγμή. Δοκιμάστε
+                  ξανά αργότερα.
                </div>
 
                <div class="form-group">
-                  <label class="form-label" for="username">Email</label>
+                  <label class="form-label" for="govAfm">ΑΦΜ</label>
                   <input
                      type="text"
-                     id="username"
-                     name="username"
+                     id="govAfm"
+                     name="afm"
                      class="form-control"
                      required
+                     inputmode="numeric"
+                     autocomplete="off"
+                     pattern="^[0-9]{9}$"
+                     title="Το ΑΦΜ πρέπει να έχει 9 ψηφία."
                      autofocus
-                     autocomplete="username"
                   />
                </div>
 
                <div class="form-group">
-                  <label class="form-label" for="password">Κωδικός</label>
+                  <label class="form-label" for="govPin">PIN</label>
                   <div class="password-container">
                      <input
                         type="password"
-                        id="password"
-                        name="password"
+                        id="govPin"
+                        name="pin"
                         class="form-control"
                         required
-                        autocomplete="current-password"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        pattern="^[0-9]{4,8}$"
+                        title="Το PIN πρέπει να έχει 4 έως 8 ψηφία."
                      />
                      <span
                         class="togglePassword"
-                        data-target="password"
+                        data-target="govPin"
                         role="button"
                         tabindex="0"
                      >
@@ -81,28 +89,12 @@
                   </div>
                </div>
 
-               <button type="submit" class="btn btn-block">Είσοδος</button>
+               <button type="submit" class="btn btn-block">Σύνδεση</button>
             </form>
 
-            <div
-               style="
-                  margin: 22px 0;
-                  display: flex;
-                  align-items: center;
-                  gap: 12px;
-               "
-            >
-               <div style="flex: 1; height: 1px; background: #eee"></div>
-               <div style="color: #777; font-size: 0.95rem">ή</div>
-               <div style="flex: 1; height: 1px; background: #eee"></div>
-            </div>
-
-            <a th:href="@{/gov-login}" class="btn btn-block">Login with Gov</a>
-
-            <p style="margin-top: 20px">
-               Δεν έχετε λογαριασμό;
-               <a th:href="@{/register}" style="color: var(--primary-color)"
-                  >Εγγραφείτε εδώ</a
+            <p style="margin-top: 16px">
+               <a th:href="@{/login}" style="color: var(--primary-color)"
+                  >Επιστροφή στη σύνδεση</a
                >
             </p>
          </div>
