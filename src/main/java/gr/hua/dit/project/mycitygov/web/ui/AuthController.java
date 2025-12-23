@@ -30,12 +30,12 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logout(final Authentication authentication) {
-        if (AuthUtils.isAuthenticated(authentication)) {
+   @GetMapping("/logout")
+   public String logout(final Authentication authentication) {
+        if (AuthUtils.isAnonymous(authentication)) {
             return "redirect:/login";
         }
         return "logout";
-    }
+   }
 
 }

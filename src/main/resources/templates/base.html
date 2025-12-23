@@ -50,7 +50,31 @@
                   <a th:href="@{/tickets}">Αιτήματα</a>
                </li>
                <li sec:authorize="isAuthenticated()">
-                  <a th:href="@{/logout}">Έξοδος</a>
+                  <form
+                     th:action="@{/logout}"
+                     method="post"
+                     style="display: inline"
+                  >
+                     <input
+                        type="hidden"
+                        th:if="${_csrf != null}"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                     />
+                     <button
+                        type="submit"
+                        style="
+                           background: none;
+                           border: none;
+                           color: inherit;
+                           cursor: pointer;
+                           padding: 0;
+                           font: inherit;
+                        "
+                     >
+                        Έξοδος
+                     </button>
+                  </form>
                </li>
             </ul>
          </div>

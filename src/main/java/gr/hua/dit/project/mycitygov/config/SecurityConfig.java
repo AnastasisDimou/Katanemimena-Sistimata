@@ -48,6 +48,7 @@ public class SecurityConfig {
                                     .permitAll())
 
                         .logout(logout -> logout
+                                    // Use default POST /logout endpoint
                                     .logoutUrl("/logout")
                                     .logoutSuccessUrl("/login?logout")
                                     .deleteCookies("JSESSIONID")

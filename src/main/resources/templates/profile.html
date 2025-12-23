@@ -77,9 +77,31 @@
                </li>
 
                <li>
-                  <a th:href="@{/logout}" style="color: var(--primary-color)">
-                     <i class="fas fa-sign-out-alt"></i> Αποσύνδεση
-                  </a>
+                  <form
+                     th:action="@{/logout}"
+                     method="post"
+                     style="display: inline"
+                  >
+                     <input
+                        type="hidden"
+                        th:if="${_csrf != null}"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                     />
+                     <button
+                        type="submit"
+                        style="
+                           background: none;
+                           border: none;
+                           color: var(--primary-color);
+                           cursor: pointer;
+                           padding: 0;
+                           font: inherit;
+                        "
+                     >
+                        <i class="fas fa-sign-out-alt"></i> Αποσύνδεση
+                     </button>
+                  </form>
                </li>
             </ul>
          </div>
