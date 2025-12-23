@@ -19,7 +19,7 @@
          </p>
 
          <br />
-         <form th:action="@{/logout}" method="post">
+         <form class="logout-form" th:action="@{/logout}" method="post">
             <input
                type="hidden"
                th:if="${_csrf != null}"

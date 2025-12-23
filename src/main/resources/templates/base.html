@@ -51,6 +51,7 @@
                </li>
                <li sec:authorize="isAuthenticated()">
                   <form
+                     class="logout-form"
                      th:action="@{/logout}"
                      method="post"
                      style="display: inline"
@@ -89,5 +90,62 @@
       <footer class="footer">
          <p>&copy; 2025 Δήμος Χαροκοπείου | MyCityGov Platform</p>
       </footer>
+
+      <!-- Logout confirmation modal -->
+      <div id="logoutModal" class="modal-overlay" style="display: none">
+         <div class="modal-box">
+            <h3>Αποσύνδεση</h3>
+            <p>Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε;</p>
+            <div class="modal-actions">
+               <button type="button" class="btn btn-secondary" id="logoutCancelBtn">
+                  Άκυρο
+               </button>
+               <button type="button" class="btn" id="logoutConfirmBtn">
+                  Αποσύνδεση
+               </button>
+            </div>
+         </div>
+      </div>
+
+      <script>
+         (() => {
+            const modal = document.getElementById("logoutModal");
+            if (!modal) return;
+            const confirmBtn = document.getElementById("logoutConfirmBtn");
+            const cancelBtn = document.getElementById("logoutCancelBtn");
+            let pendingForm = null;
+
+            const showModal = (form) => {
+               pendingForm = form;
+               modal.style.display = "flex";
+            };
+
+            const hideModal = () => {
+               modal.style.display = "none";
+               pendingForm = null;
+            };
+
+            document.querySelectorAll("form.logout-form").forEach((form) => {
+               form.addEventListener("submit", (e) => {
+                  e.preventDefault();
+                  showModal(form);
+               });
+            });
+
+            confirmBtn?.addEventListener("click", () => {
+               if (pendingForm) {
+                  pendingForm.submit();
+               }
+               hideModal();
+            });
+
+            cancelBtn?.addEventListener("click", hideModal);
+            modal.addEventListener("click", (e) => {
+               if (e.target === modal) {
+                  hideModal();
+               }
+            });
+         })();
+      </script>
    </body>
 </html>
