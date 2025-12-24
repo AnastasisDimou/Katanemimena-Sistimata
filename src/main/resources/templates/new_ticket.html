@@ -45,10 +45,11 @@
                      required
                   >
                      <option value="">-- Επιλέξτε Υπηρεσία --</option>
-                     <option value="1">ΚΕΠ</option>
-                     <option value="2">Τεχνική Υπηρεσία</option>
-                     <option value="3">Κοινωνική Υπηρεσία</option>
-                     <option value="4">Υπηρεσία Φωτισμού</option>
+                     <option
+                        th:each="dept : ${serviceDepartments}"
+                        th:value="${dept.id}"
+                        th:text="${dept.name}"
+                     ></option>
                   </select>
                   <div
                      class="error-message"

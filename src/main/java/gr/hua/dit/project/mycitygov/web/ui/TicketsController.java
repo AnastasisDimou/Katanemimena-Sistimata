@@ -1,22 +1,32 @@
 package gr.hua.dit.project.mycitygov.web.ui;
 
+import gr.hua.dit.project.mycitygov.core.repository.ServiceDepartmentRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collections;
+import java.util.Objects;
 
 @Controller
 public class TicketsController {
 
+   private final ServiceDepartmentRepository serviceDepartmentRepository;
+
+   public TicketsController(final ServiceDepartmentRepository serviceDepartmentRepository) {
+      this.serviceDepartmentRepository = Objects.requireNonNull(serviceDepartmentRepository);
+   }
+
    @GetMapping("/tickets")
    public String listTickets(final Model model) {
+      model.addAttribute("serviceDepartments", this.serviceDepartmentRepository.findAll());
       model.addAttribute("requests", Collections.emptyList());
       return "tickets";
    }
 
    @GetMapping("/tickets/new")
    public String newTicketForm(final Model model) {
+      model.addAttribute("serviceDepartments", this.serviceDepartmentRepository.findAll());
       model.addAttribute("openRequest", new OpenTicketForm());
       return "new_ticket";
    }
