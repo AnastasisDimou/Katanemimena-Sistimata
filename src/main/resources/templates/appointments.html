@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <main layout:fragment="main">
+      <section class="hero">
+         <div class="container text-center">
+            <div class="hero-content">
+               <h1 class="hero-text text-xxl">Τα ραντεβού μου</h1>
+               <p class="text-xl my-4 font-semibold">
+                  Δείτε τα προγραμματισμένα ραντεβού σας και κανονίστε νέα
+                  για τις δημοτικές υπηρεσίες.
+               </p>
+               <div class="hero-buttons">
+                  <a class="btn btn-primary" th:href="@{/tickets/new}">
+                     <i class="fas fa-calendar-plus"></i> Κλείσε νέο ραντεβού
+                  </a>
+                  <a class="btn btn-secondary" th:href="@{/tickets}">
+                     <i class="fas fa-clipboard-list"></i> Προβολή αιτημάτων
+                  </a>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <section class="container" style="margin: 50px auto">
+         <div class="card-box" style="margin-bottom: 20px">
+            <h2 class="text-lg" style="margin-bottom: 10px">
+               Επερχόμενα ραντεβού
+            </h2>
+            <p class="text-md" style="color: #666">
+               Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.
+               Υποβάλετε ένα νέο αίτημα για να ορίσετε ραντεβού με την υπηρεσία.
+            </p>
+         </div>
+
+         <div class="card-box">
+            <h2 class="text-lg" style="margin-bottom: 10px">Ιστορικό</h2>
+            <p class="text-md" style="color: #666">
+               Το ιστορικό ραντεβού θα εμφανιστεί εδώ μόλις καταχωρηθούν.
+            </p>
+         </div>
+      </section>
+   </main>
+</html>
