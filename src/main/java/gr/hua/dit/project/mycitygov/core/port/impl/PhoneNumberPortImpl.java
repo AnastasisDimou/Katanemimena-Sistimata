@@ -3,6 +3,7 @@ package gr.hua.dit.project.mycitygov.core.port.impl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import gr.hua.dit.project.mycitygov.config.RestApiClientConfig;
 import gr.hua.dit.project.mycitygov.core.port.PhoneNumberPort;
@@ -34,7 +35,11 @@ public class PhoneNumberPortImpl implements PhoneNumberPort {
          throw new IllegalArgumentException();
 
       final String baseUrl = restApiClientConfig.getBaseUrl();
-      final String url = baseUrl + "/api/v1/phone-numbers/" + rawPhoneNumber + "/validations";
+      final String url = UriComponentsBuilder
+            .fromHttpUrl(baseUrl)
+            .path("/api/v1/phone-numbers/{raw}/validations")
+            .buildAndExpand(rawPhoneNumber)
+            .toUriString();
 
       final ResponseEntity<PhoneNumberValidationResult> response = this.restTemplate.getForEntity(url,
             PhoneNumberValidationResult.class);

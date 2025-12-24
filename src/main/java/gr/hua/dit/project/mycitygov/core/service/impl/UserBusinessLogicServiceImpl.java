@@ -2,6 +2,8 @@ package gr.hua.dit.project.mycitygov.core.service.impl;
 
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
+import gr.hua.dit.project.mycitygov.core.port.PhoneNumberPort;
+import gr.hua.dit.project.mycitygov.core.port.impl.dto.PhoneNumberValidationResult;
 import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
 import gr.hua.dit.project.mycitygov.core.service.UserBusinessLogicService;
 import gr.hua.dit.project.mycitygov.core.service.mapper.UserMapper;
@@ -30,17 +32,21 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
 
    private final Validator validator;
    private final PasswordEncoder passwordEncoder;
+   private final PhoneNumberPort phoneNumberPort;
    private final UserRepository userRepository;
    private final UserMapper userMapper;
 
    public UserBusinessLogicServiceImpl(
          Validator validator,
          PasswordEncoder passwordEncoder,
+         PhoneNumberPort phoneNumberPort,
          UserRepository userRepository,
          UserMapper userMapper) {
       if (validator == null)
          throw new NullPointerException();
       if (passwordEncoder == null)
+         throw new NullPointerException();
+      if (phoneNumberPort == null)
          throw new NullPointerException();
       if (userRepository == null)
          throw new NullPointerException();
@@ -49,6 +55,7 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
 
       this.validator = validator;
       this.passwordEncoder = passwordEncoder;
+      this.phoneNumberPort = phoneNumberPort;
       this.userRepository = userRepository;
       this.userMapper = userMapper;
    }
@@ -85,6 +92,16 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
       final String phoneNumber = createUserRequest.phoneNumber().strip();
       final String rawPassword = createUserRequest.rawPassword();
 
+      // Validate & normalize phone via NOC (must be valid mobile)
+      final PhoneNumberValidationResult phoneValidation = this.phoneNumberPort.validatePhoneNumber(phoneNumber);
+      if (phoneValidation == null || !phoneValidation.isValidMobile()) {
+         return CreateUserResult.fail("Ο αριθμός τηλεφώνου δεν είναι έγκυρος ή δεν είναι κινητό.");
+      }
+      final String normalizedPhone = phoneValidation.e164();
+      if (normalizedPhone == null || normalizedPhone.isBlank()) {
+         return CreateUserResult.fail("Δεν ήταν δυνατή η κανονικοποίηση του τηλεφώνου.");
+      }
+
       // 3. Business checks (uniqueness)
       // (make sure UserRepository has these methods)
       // ------------------------------------------------------
@@ -100,7 +117,7 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
          return CreateUserResult.fail("Το ΑΜΚΑ χρησιμοποιείται ήδη.");
       }
 
-      if (this.userRepository.existsByPhoneNumber(phoneNumber)) {
+      if (this.userRepository.existsByPhoneNumber(normalizedPhone)) {
          return CreateUserResult.fail("Ο αριθμός τηλεφώνου χρησιμοποιείται ήδη.");
       }
 
@@ -115,7 +132,7 @@ public class UserBusinessLogicServiceImpl implements UserBusinessLogicService {
       user.setFirstName(firstName);
       user.setLastName(lastName);
       user.setEmail(email);
-      user.setPhoneNumber(phoneNumber);
+      user.setPhoneNumber(normalizedPhone);
       user.setPasswordHash(hashedPassword);
       user.setUserType(UserType.CITIZEN);
 
