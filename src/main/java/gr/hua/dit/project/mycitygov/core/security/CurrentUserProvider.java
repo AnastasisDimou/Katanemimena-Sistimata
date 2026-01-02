@@ -34,6 +34,7 @@ public final class CurrentUserProvider {
          return Optional.empty();
 
       return Optional.of(new CurrentUser(
+            user.getId(),
             user.getFirstName(),
             user.getLastName(),
             user.getEmail(),

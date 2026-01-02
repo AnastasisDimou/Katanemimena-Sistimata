@@ -34,27 +34,27 @@
                th:object="${openRequest}"
             >
                <div class="form-group">
-                  <label for="departmentId" class="form-label"
-                     >Δημοτική Υπηρεσία</label
+                  <label for="requestTypeId" class="form-label"
+                     >Τύπος Αιτήματος</label
                   >
                   <select
-                     id="departmentId"
-                     name="departmentId"
-                     th:field="*{departmentId}"
+                     id="requestTypeId"
+                     name="requestTypeId"
+                     th:field="*{requestTypeId}"
                      class="form-select"
                      required
                   >
-                     <option value="">-- Επιλέξτε Υπηρεσία --</option>
+                     <option value="">-- Επιλέξτε Τύπο Αιτήματος --</option>
                      <option
-                        th:each="dept : ${serviceDepartments}"
-                        th:value="${dept.id}"
-                        th:text="${dept.name}"
+                        th:each="rt : ${requestTypes}"
+                        th:value="${rt.id}"
+                        th:text="${rt.name}"
                      ></option>
                   </select>
                   <div
                      class="error-message"
-                     th:if="${#fields.hasErrors('departmentId')}"
-                     th:errors="*{departmentId}"
+                     th:if="${#fields.hasErrors('requestTypeId')}"
+                     th:errors="*{requestTypeId}"
                   ></div>
                </div>
 

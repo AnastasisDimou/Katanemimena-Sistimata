@@ -17,6 +17,8 @@ public interface RequestTypeRepository extends JpaRepository<RequestType, Long> 
 
    List<RequestType> findByServiceDepartmentAndActiveTrue(ServiceDepartment department);
 
+   List<RequestType> findByActiveTrueOrderByNameAsc();
+
    boolean existsByProtocolNumber(String protocolNumber);
 
 }

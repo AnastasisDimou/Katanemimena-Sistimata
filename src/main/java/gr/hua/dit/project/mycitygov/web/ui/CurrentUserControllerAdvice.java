@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import gr.hua.dit.project.mycitygov.core.security.CurrentUser;
 import gr.hua.dit.project.mycitygov.core.security.CurrentUserProvider;
 
-@ControllerAdvice(basePackageClasses = { ProfileController.class })
+@ControllerAdvice(basePackageClasses = { ProfileController.class, TicketsController.class })
 public class CurrentUserControllerAdvice {
    private final CurrentUserProvider currentUserProvider;
 

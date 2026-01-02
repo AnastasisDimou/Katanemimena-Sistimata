@@ -54,7 +54,7 @@ public class SecurityConfig {
                                     .permitAll()
 
                                     // Pages that require authentication
-                                    .requestMatchers("/profile", "/logout").authenticated()
+                                    .requestMatchers("/profile", "/logout", "/tickets/**").authenticated()
 
                                     // The rest are public
                                     .anyRequest().permitAll())

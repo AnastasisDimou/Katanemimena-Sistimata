@@ -12,8 +12,11 @@ public class Request {
    private Long id;
 
    // reference number for the citizen
-   @Column(nullable = false, unique = true, length = 100)
+   @Column(nullable = true, unique = true, length = 100)
    private String protocolNumber;
+
+   @Column(nullable = false, length = 200)
+   private String subject;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "citizen_id", nullable = false)
@@ -40,11 +43,47 @@ public class Request {
    private User assignedEmployee;
 
    @Column(length = 2000)
+   private String employeeComments;
+
+   @Column(length = 500)
+   private String attachmentUrl;
+
+   @Column(length = 2000)
    private String description;
 
    public Request() {
    }
 
+   public Request(String protocolNumber,
+         String subject,
+         User citizen,
+         RequestType requestType,
+         RequestStatus status,
+         LocalDateTime submissionDate,
+         LocalDateTime dueDate,
+         LocalDateTime completionDate,
+         User assignedEmployee,
+         String employeeComments,
+         String attachmentUrl,
+         String description) {
+      this.protocolNumber = protocolNumber;
+      this.subject = subject;
+      this.citizen = citizen;
+      this.requestType = requestType;
+      this.status = status;
+      this.submissionDate = submissionDate;
+      this.dueDate = dueDate;
+      this.completionDate = completionDate;
+      this.assignedEmployee = assignedEmployee;
+      this.employeeComments = employeeComments;
+      this.attachmentUrl = attachmentUrl;
+      this.description = description;
+   }
+
+   /**
+    * Backward-compatible constructor without
+    * subject/employeeComments/attachmentUrl.
+    */
    public Request(String protocolNumber,
          User citizen,
          RequestType requestType,
@@ -54,15 +93,8 @@ public class Request {
          LocalDateTime completionDate,
          User assignedEmployee,
          String description) {
-      this.protocolNumber = protocolNumber;
-      this.citizen = citizen;
-      this.requestType = requestType;
-      this.status = status;
-      this.submissionDate = submissionDate;
-      this.dueDate = dueDate;
-      this.completionDate = completionDate;
-      this.assignedEmployee = assignedEmployee;
-      this.description = description;
+      this(protocolNumber, null, citizen, requestType, status, submissionDate, dueDate,
+            completionDate, assignedEmployee, null, null, description);
    }
 
    public Long getId() {
@@ -79,6 +111,14 @@ public class Request {
 
    public void setProtocolNumber(String protocolNumber) {
       this.protocolNumber = protocolNumber;
+   }
+
+   public String getSubject() {
+      return subject;
+   }
+
+   public void setSubject(String subject) {
+      this.subject = subject;
    }
 
    public User getCitizen() {
@@ -135,6 +175,22 @@ public class Request {
 
    public void setAssignedEmployee(User assignedEmployee) {
       this.assignedEmployee = assignedEmployee;
+   }
+
+   public String getEmployeeComments() {
+      return employeeComments;
+   }
+
+   public void setEmployeeComments(String employeeComments) {
+      this.employeeComments = employeeComments;
+   }
+
+   public String getAttachmentUrl() {
+      return attachmentUrl;
+   }
+
+   public void setAttachmentUrl(String attachmentUrl) {
+      this.attachmentUrl = attachmentUrl;
    }
 
    public String getDescription() {
