@@ -59,6 +59,16 @@ public class RequestService {
 	}
 
 	@Transactional(readOnly = true)
+	public List<TicketListItem> getTicketsForCurrentUser() {
+		final CurrentUser me = this.currentUserProvider.requireCurrentUser();
+		return switch (me.type()) {
+			case CITIZEN -> this.getCitizenTickets();
+			case EMPLOYEE -> this.getDepartmentTickets();
+			case ADMIN -> this.getAllTickets();
+		};
+	}
+
+	@Transactional(readOnly = true)
 	public List<TicketListItem> getDepartmentTickets() {
 		final User employee = requireAuthenticatedUser(UserType.EMPLOYEE);
 		final ServiceDepartment dept = employee.getServiceDepartment();
@@ -124,6 +134,16 @@ public class RequestService {
 		}
 
 		return toDetailsView(req);
+	}
+
+	@Transactional(readOnly = true)
+	public TicketDetailsView getTicketForCurrentUser(final Long requestId) {
+		final CurrentUser me = this.currentUserProvider.requireCurrentUser();
+		return switch (me.type()) {
+			case CITIZEN -> this.getCitizenTicket(requestId);
+			case EMPLOYEE -> this.getEmployeeTicket(requestId);
+			case ADMIN -> this.getEmployeeTicket(requestId);
+		};
 	}
 
 	@Transactional

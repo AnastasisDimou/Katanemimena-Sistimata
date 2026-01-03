@@ -33,7 +33,7 @@ public class GovLoginController {
    @GetMapping("/gov-login")
    public String govLogin(final Authentication authentication) {
       if (AuthUtils.isAuthenticated(authentication)) {
-         return "redirect:/profile";
+         return "redirect:/";
       }
       return "gov-login";
    }
@@ -45,13 +45,13 @@ public class GovLoginController {
          final Authentication authentication,
          final HttpServletRequest request) {
       if (AuthUtils.isAuthenticated(authentication)) {
-         return "redirect:/profile";
+         return "redirect:/";
       }
 
       try {
          final GovLoginOutcome outcome = this.govLoginService.loginWithGov(afm, pin);
          this.authenticateUser(outcome.user(), request);
-         return "redirect:/profile";
+         return "redirect:/";
       } catch (GovAuthException ex) {
          if (ex.reason() == GovAuthException.Reason.INVALID_CREDENTIALS) {
             return "redirect:/gov-login?govError";

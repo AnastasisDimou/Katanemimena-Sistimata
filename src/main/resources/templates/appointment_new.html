@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}">
+   <head>
+      <title>Νέο Ραντεβού</title>
+   </head>
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <p class="mb-4">
+            <a th:href="@{/appointments}" style="color: var(--primary-color)">
+               <i class="fas fa-arrow-left"></i> Πίσω στα ραντεβού
+            </a>
+         </p>
+         <div class="card-box">
+            <h1 class="text-xl text-center mb-3">Κλείσιμο Ραντεβού</h1>
+            <form th:action="@{/appointments/new}" method="post" th:object="${form}">
+               <div class="form-group">
+                  <label class="form-label" for="departmentId">Υπηρεσία</label>
+                  <select class="form-select" id="departmentId" name="departmentId" th:field="*{departmentId}" required>
+                     <option value="">-- Επιλέξτε Υπηρεσία --</option>
+                     <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                  </select>
+                  <div class="error-message" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></div>
+               </div>
+               <div class="form-group">
+                  <label class="form-label" for="appointmentDateTime">Ημερομηνία & Ώρα</label>
+                  <input class="form-control" type="datetime-local" id="appointmentDateTime" name="appointmentDateTime"
+                     th:field="*{appointmentDateTime}" required />
+                  <div class="error-message" th:if="${#fields.hasErrors('appointmentDateTime')}"
+                     th:errors="*{appointmentDateTime}"></div>
+               </div>
+               <div class="form-group mt-4 text-center">
+                  <button type="submit" class="btn btn-primary text-md">
+                     <i class="fas fa-calendar-plus"></i> Κλείσε Ραντεβού
+                  </button>
+               </div>
+            </form>
+         </div>
+      </main>
+   </body>
+</html>

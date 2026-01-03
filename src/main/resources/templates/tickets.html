@@ -5,12 +5,12 @@
    layout:decorate="~{base}"
 >
    <head>
-      <title>Αιτήματα & Ραντεβού</title>
+      <title>Αιτήματα</title>
    </head>
 
    <body>
       <main layout:fragment="main" class="content-main container-sm">
-         <h1 class="text-xl">Τα Αιτήματά/Ραντεβού μου</h1>
+         <h1 class="text-xl">Τα Αιτήματά μου</h1>
          <div class="mb-4">
             <a th:href="@{/profile}" class="text-sm" style="color: #666">
                <i class="fas fa-user-circle"></i> Συνδεδεμένος ως:
@@ -23,8 +23,7 @@
          <!-- User (Citizen) Action -->
          <div th:if="${me.type().name() == 'CITIZEN'}" class="mb-4">
             <a th:href="@{/tickets/new}" class="btn btn-primary text-md"
-               ><i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος /
-               Ραντεβού</a
+               ><i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος</a
             >
          </div>
 

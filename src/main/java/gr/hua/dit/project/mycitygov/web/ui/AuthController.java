@@ -19,7 +19,7 @@ public class AuthController {
             final Model model) {
 
         if (AuthUtils.isAuthenticated(authentication)) {
-            return "redirect:/profile";
+            return "redirect:/";
         }
         if (request.getParameter("error") != null) {
             model.addAttribute("error", "Λάθος email ή κωδικός.");
@@ -30,12 +30,12 @@ public class AuthController {
         return "login";
     }
 
-   @GetMapping("/logout")
-   public String logout(final Authentication authentication) {
+    @GetMapping("/logout")
+    public String logout(final Authentication authentication) {
         if (AuthUtils.isAnonymous(authentication)) {
             return "redirect:/login";
         }
         return "logout";
-   }
+    }
 
 }

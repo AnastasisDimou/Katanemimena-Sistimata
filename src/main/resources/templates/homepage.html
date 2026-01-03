@@ -16,55 +16,30 @@
                 </p>
                 <br /><br />
                 <div class="hero-buttons">
-                    <a th:href="@{/tickets/new}" class="btn btn-primary"
+                    <a
+                            th:href="@{/tickets/new}"
+                            class="btn btn-primary"
+                            sec:authorize="isAuthenticated()"
                     >Νέο Αίτημα</a
                     >
-                    <a th:href="@{/appointments}" class="btn btn-secondary">Ραντεβού</a>
+                    <a
+                            th:href="@{/appointments}"
+                            class="btn btn-secondary"
+                            sec:authorize="isAuthenticated()"
+                    >Ραντεβού</a>
                     <a
                             th:href="@{/register}"
                             class="btn btn-dark"
                             sec:authorize="!isAuthenticated()"
                     >Εγγραφή</a
                     >
+                    <a
+                            th:href="@{/login}"
+                            class="btn btn-primary"
+                            sec:authorize="!isAuthenticated()"
+                    >Σύνδεση</a
+                    >
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <br /><br />
-
-    <section class="container" style="margin-bottom: 50px">
-        <div class="text-center">
-            <h2 class="text-xl">Πώς λειτουργεί;</h2>
-            <p class="text-md">Τρία απλά βήματα για την εξυπηρέτησή σας.</p>
-        </div>
-
-        <div class="steps-grid">
-            <div class="step-item">
-                <i
-                        class="fas fa-user-plus fa-3x"
-                        style="color: var(--primary-color)"
-                ></i>
-                <h3 class="text-lg">1. Εγγραφή</h3>
-                <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
-            </div>
-            <div class="step-item">
-                <i
-                        class="fas fa-file-alt fa-3x"
-                        style="color: var(--primary-color)"
-                ></i>
-                <h3 class="text-lg">2. Αίτημα</h3>
-                <p>
-                    Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.
-                </p>
-            </div>
-            <div class="step-item">
-                <i
-                        class="fas fa-check-circle fa-3x"
-                        style="color: var(--primary-color)"
-                ></i>
-                <h3 class="text-lg">3. Ενημέρωση</h3>
-                <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
             </div>
         </div>
     </section>

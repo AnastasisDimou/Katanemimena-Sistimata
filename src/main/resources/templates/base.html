@@ -44,41 +44,13 @@
                   <a th:href="@{/register}">Εγγραφή</a>
                </li>
                <li sec:authorize="isAuthenticated()">
-                  <a th:href="@{/profile}">Προφίλ</a>
-               </li>
-               <li sec:authorize="isAuthenticated()">
                   <a th:href="@{/tickets}">Αιτήματα</a>
                </li>
                <li sec:authorize="isAuthenticated()">
                   <a th:href="@{/appointments}">Ραντεβού</a>
                </li>
                <li sec:authorize="isAuthenticated()">
-                  <form
-                     class="logout-form"
-                     th:action="@{/logout}"
-                     method="post"
-                     style="display: inline"
-                  >
-                     <input
-                        type="hidden"
-                        th:if="${_csrf != null}"
-                        th:name="${_csrf.parameterName}"
-                        th:value="${_csrf.token}"
-                     />
-                     <button
-                        type="submit"
-                        style="
-                           background: none;
-                           border: none;
-                           color: inherit;
-                           cursor: pointer;
-                           padding: 0;
-                           font: inherit;
-                        "
-                     >
-                        Έξοδος
-                     </button>
-                  </form>
+                  <a th:href="@{/profile}">Προφίλ</a>
                </li>
             </ul>
          </div>

@@ -14,11 +14,8 @@
                   για τις δημοτικές υπηρεσίες.
                </p>
                <div class="hero-buttons">
-                  <a class="btn btn-primary" th:href="@{/tickets/new}">
+                  <a class="btn btn-primary" th:href="@{/appointments/new}">
                      <i class="fas fa-calendar-plus"></i> Κλείσε νέο ραντεβού
-                  </a>
-                  <a class="btn btn-secondary" th:href="@{/tickets}">
-                     <i class="fas fa-clipboard-list"></i> Προβολή αιτημάτων
                   </a>
                </div>
             </div>
@@ -30,17 +27,29 @@
             <h2 class="text-lg" style="margin-bottom: 10px">
                Επερχόμενα ραντεβού
             </h2>
-            <p class="text-md" style="color: #666">
-               Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.
-               Υποβάλετε ένα νέο αίτημα για να ορίσετε ραντεβού με την υπηρεσία.
-            </p>
-         </div>
-
-         <div class="card-box">
-            <h2 class="text-lg" style="margin-bottom: 10px">Ιστορικό</h2>
-            <p class="text-md" style="color: #666">
-               Το ιστορικό ραντεβού θα εμφανιστεί εδώ μόλις καταχωρηθούν.
-            </p>
+            <div style="overflow-x: auto">
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th>Πρωτόκολλο</th>
+                        <th>Υπηρεσία</th>
+                        <th>Ημερομηνία/Ώρα</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr th:each="a : ${appointments}">
+                        <td th:text="${a.protocolNumber()}"></td>
+                        <td th:text="${a.department().name()}"></td>
+                        <td th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}"></td>
+                     </tr>
+                     <tr th:if="${appointments == null || appointments.isEmpty()}">
+                        <td colspan="3" class="text-center" style="color: #666">
+                           Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
          </div>
       </section>
    </main>
