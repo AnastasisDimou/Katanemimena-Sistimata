@@ -23,33 +23,29 @@
       </section>
 
       <section class="container" style="margin: 50px auto">
-         <div class="card-box" style="margin-bottom: 20px">
-            <h2 class="text-lg" style="margin-bottom: 10px">
-               Επερχόμενα ραντεβού
-            </h2>
-            <div style="overflow-x: auto">
-               <table class="table">
-                  <thead>
-                     <tr>
-                        <th>Πρωτόκολλο</th>
-                        <th>Υπηρεσία</th>
-                        <th>Ημερομηνία/Ώρα</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr th:each="a : ${appointments}">
-                        <td th:text="${a.protocolNumber()}"></td>
-                        <td th:text="${a.department().name()}"></td>
-                        <td th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}"></td>
-                     </tr>
-                     <tr th:if="${appointments == null || appointments.isEmpty()}">
-                        <td colspan="3" class="text-center" style="color: #666">
-                           Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
+         <div class="preview-card">
+            <div class="preview-card__header">
+               <div>
+                  <h2 class="text-lg">Επερχόμενα ραντεβού</h2>
+                  <p class="muted">Προγραμματισμένα ραντεβού σας</p>
+               </div>
             </div>
+            <ul class="preview-list">
+               <li th:each="a : ${appointments}" class="preview-item">
+                  <div>
+                     <div class="preview-item__title" th:text="${a.protocolNumber()}">APP-000</div>
+                     <div class="preview-item__meta">
+                        <span th:text="${a.department().name()}">Τμήμα</span>
+                        <span class="dot">•</span>
+                        <span th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
+                     </div>
+                  </div>
+                  <span class="status-pill status-pill--neutral">Κλεισμένο</span>
+               </li>
+               <li th:if="${appointments == null || appointments.isEmpty()}" class="preview-empty">
+                  Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.
+               </li>
+            </ul>
          </div>
       </section>
    </main>

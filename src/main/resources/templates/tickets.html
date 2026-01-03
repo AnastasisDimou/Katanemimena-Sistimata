@@ -30,42 +30,30 @@
          <br />
          <h2 class="text-lg">Λίστα Αιτημάτων</h2>
 
-         <div style="overflow-x: auto">
-            <table class="table">
-               <thead>
-                  <tr>
-                     <th>ID&emsp;</th>
-                     <th>Πρωτόκολλο&emsp;</th>
-                     <th>Κατάσταση&emsp;</th>
-                     <th>Θέμα&emsp;</th>
-                     <th>Υπηρεσία&emsp;</th>
-                     <th>Υποβολή&emsp;</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr th:each="r : ${requests}">
-                     <td>
-                        <a
-                           th:href="@{|/tickets/${r.id()}|}"
-                           style="color: #d62828"
-                           th:text="${r.id()}"
-                        ></a>
-                     </td>
-                     <td th:text="${r.protocolNumber()}"></td>
-                     <td th:text="${r.status().name()}"></td>
-                     <td th:text="${r.subject()}"></td>
-                     <td th:text="${r.department().name()}"></td>
-                     <td
-                        th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}"
-                     ></td>
-                  </tr>
-                  <tr th:if="${requests == null || requests.isEmpty()}">
-                     <td colspan="6" class="text-center" style="color: #666">
-                        Δεν βρέθηκαν καταχωρημένα αιτήματα.
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
+         <div class="preview-card" style="margin-top: 12px">
+            <div class="preview-card__header">
+               <div>
+                  <p class="muted">Πιο πρόσφατα αιτήματα</p>
+               </div>
+            </div>
+            <ul class="preview-list">
+               <li th:each="r : ${requests}" class="preview-item">
+                  <div>
+                     <a class="preview-item__title" th:href="@{|/tickets/${r.id()}|}" th:text="${r.subject()}">Θέμα</a>
+                     <div class="preview-item__meta">
+                        <span th:text="${r.protocolNumber()}">REQ-000</span>
+                        <span class="dot">•</span>
+                        <span th:text="${r.department().name()}">Τμήμα</span>
+                        <span class="dot">•</span>
+                        <span th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
+                     </div>
+                  </div>
+                  <span class="status-pill" th:text="${r.status().name()}">STATUS</span>
+               </li>
+               <li th:if="${requests == null || requests.isEmpty()}" class="preview-empty">
+                  Δεν βρέθηκαν καταχωρημένα αιτήματα.
+               </li>
+            </ul>
          </div>
       </main>
    </body>

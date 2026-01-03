@@ -23,8 +23,12 @@
                   <div class="error-message" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></div>
                </div>
                <div class="form-group">
-                  <label class="form-label" for="appointmentDateTime">Ημερομηνία & Ώρα</label>
-                  <input class="form-control" type="datetime-local" id="appointmentDateTime" name="appointmentDateTime"
+                  <label class="form-label" for="appointmentDate">Ημερομηνία & Ώρα</label>
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap">
+                     <input class="form-control" style="flex: 1 1 180px" type="date" id="appointmentDate" />
+                     <input class="form-control" style="flex: 1 1 140px" type="time" id="appointmentTime" />
+                  </div>
+                  <input type="hidden" id="appointmentDateTime" name="appointmentDateTime"
                      th:field="*{appointmentDateTime}" required />
                   <div class="error-message" th:if="${#fields.hasErrors('appointmentDateTime')}"
                      th:errors="*{appointmentDateTime}"></div>
@@ -36,6 +40,34 @@
                </div>
             </form>
          </div>
+
+         <script>
+            document.addEventListener("DOMContentLoaded", () => {
+               const hiddenInput = document.getElementById("appointmentDateTime");
+               const dateInput = document.getElementById("appointmentDate");
+               const timeInput = document.getElementById("appointmentTime");
+
+               if (!hiddenInput || !dateInput || !timeInput) return;
+
+               const updateHidden = () => {
+                  if (!dateInput.value || !timeInput.value) {
+                     hiddenInput.value = "";
+                     return;
+                  }
+                  hiddenInput.value = `${dateInput.value}T${timeInput.value}`;
+               };
+
+               dateInput.addEventListener("change", updateHidden);
+               timeInput.addEventListener("change", updateHidden);
+
+               // Pre-fill visible inputs if value exists (e.g., after validation errors)
+               if (hiddenInput.value) {
+                  const [datePart, timePart] = hiddenInput.value.split("T");
+                  if (datePart) dateInput.value = datePart;
+                  if (timePart) timeInput.value = timePart;
+               }
+            });
+         </script>
       </main>
    </body>
 </html>
