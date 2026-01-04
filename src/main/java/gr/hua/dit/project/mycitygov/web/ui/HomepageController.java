@@ -25,12 +25,17 @@ public class HomepageController {
 
    @GetMapping("/")
    public String showHomepage(final Authentication authentication, final Model model) {
-      if (AuthUtils.isAuthenticated(authentication)) {
+      final boolean authenticated = AuthUtils.isAuthenticated(authentication);
+      if (authenticated) {
          final List<TicketListItem> tickets = this.requestService.getTicketsForCurrentUser();
          final List<AppointmentView> appointments = this.appointmentService.listForCurrentUser();
          model.addAttribute("ticketPreview", tickets.stream().limit(3).toList());
          model.addAttribute("appointmentPreview", appointments.stream().limit(3).toList());
+      } else {
+         model.addAttribute("ticketPreview", List.of());
+         model.addAttribute("appointmentPreview", List.of());
       }
+      model.addAttribute("isAuthenticated", authenticated);
       return "homepage";
    }
 }

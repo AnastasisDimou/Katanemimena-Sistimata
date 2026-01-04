@@ -73,7 +73,7 @@ public class InitializationService {
 
 	@EventListener(ApplicationReadyEvent.class)
 	@Transactional
-	@SuppressWarnings("null") // Lists below are explicitly populated with non-null entries
+	@SuppressWarnings("null")
 	public void populateDatabaseWithInitialData() {
 		final boolean alreadyInitialized = this.initialized.getAndSet(true);
 		if (alreadyInitialized) {
@@ -163,48 +163,38 @@ public class InitializationService {
 
 		// 4) Optional demo Requests + Appointments (useful for testing screens later)
 		final LocalDateTime now = LocalDateTime.now().withSecond(0).withNano(0);
-		final int defaultSlaDays = 5;
 
 		final Request r1 = new Request(
 				"REQ-000001",
-				"Βεβαίωση Μόνιμης Κατοικίας",
 				citizen,
 				rtKep1,
 				RequestStatus.SUBMITTED,
 				now.minusDays(1),
-				now.minusDays(1).plusDays(slaDaysOrDefault(rtKep1, defaultSlaDays)),
+				now.minusDays(1).plusDays(rtKep1.getMaxProcessingDays()),
 				null,
 				employeeKep,
-				null,
-				null,
 				"Παρακαλώ για έκδοση βεβαίωσης μόνιμης κατοικίας.");
 
 		final Request r2 = new Request(
 				"REQ-000002",
-				"Επισκευή Δημοτικού Φωτισμού",
 				citizen,
 				rtTech1,
 				RequestStatus.IN_PROGRESS,
 				now.minusDays(3),
-				now.minusDays(3).plusDays(slaDaysOrDefault(rtTech1, defaultSlaDays)),
+				now.minusDays(3).plusDays(rtTech1.getMaxProcessingDays()),
 				null,
 				employeeTech,
-				null,
-				null,
 				"Ο δημοτικός φωτισμός στην οδό X δεν λειτουργεί.");
 
 		final Request r3 = new Request(
 				"REQ-000003",
-				"Αποκομιδή Ογκωδών",
 				citizen,
 				rtClean1,
 				RequestStatus.COMPLETED,
 				now.minusDays(10),
-				now.minusDays(10).plusDays(slaDaysOrDefault(rtClean1, defaultSlaDays)),
+				now.minusDays(10).plusDays(rtClean1.getMaxProcessingDays()),
 				now.minusDays(6),
 				employeeClean,
-				"Η εργασία ολοκληρώθηκε επιτυχώς.",
-				null,
 				"Αποκομιδή ογκωδών από την οδό Y.");
 
 		final List<Request> requests = List.of(r1, r2, r3);
@@ -224,10 +214,5 @@ public class InitializationService {
 		LOGGER.info("Users: {}", userRepository.count());
 		LOGGER.info("Requests: {}", requestRepository.count());
 		LOGGER.info("Appointments: {}", appointmentRepository.count());
-	}
-
-	private int slaDaysOrDefault(final RequestType rt, final int defaultSlaDays) {
-		final Integer days = rt.getMaxProcessingDays();
-		return days != null ? days : defaultSlaDays;
 	}
 }

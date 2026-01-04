@@ -54,10 +54,13 @@
         </div>
     </section>
 
-    <section class="container" style="margin: 60px auto" sec:authorize="isAuthenticated()">
+    <section class="container" style="margin: 60px auto">
         <div class="text-center">
             <h2 class="text-xl">Γρήγορη επισκόπηση</h2>
             <p class="text-md">Δείτε τα πιο πρόσφατα αιτήματα και ραντεβού σας.</p>
+            <p class="text-sm muted" th:if="${!isAuthenticated}">
+                Συνδεθείτε για να εμφανιστούν τα προσωπικά σας στοιχεία.
+            </p>
         </div>
 
         <div class="preview-grid">
@@ -109,7 +112,11 @@
                             class="preview-item"
                     >
                         <div>
-                            <div class="preview-item__title" th:text="${a.protocolNumber()}">APP-000</div>
+                            <a
+                                    class="preview-item__title"
+                                    th:href="@{|/appointments/${a.id()}|}"
+                                    th:text="${a.protocolNumber()}"
+                            >APP-000</a>
                             <div class="preview-item__meta">
                                 <span th:text="${a.department().name()}">Τμήμα</span>
                                 <span class="dot">•</span>

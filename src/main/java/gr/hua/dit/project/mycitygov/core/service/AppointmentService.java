@@ -16,8 +16,10 @@ import gr.hua.dit.project.mycitygov.core.repository.ServiceDepartmentRepository;
 import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
 import gr.hua.dit.project.mycitygov.core.security.CurrentUser;
 import gr.hua.dit.project.mycitygov.core.security.CurrentUserProvider;
+import gr.hua.dit.project.mycitygov.core.service.model.AppointmentDetailsView;
 import gr.hua.dit.project.mycitygov.core.service.model.AppointmentView;
 import gr.hua.dit.project.mycitygov.core.service.model.DepartmentSummary;
+import gr.hua.dit.project.mycitygov.core.service.model.UserSummary;
 import gr.hua.dit.project.mycitygov.web.ui.model.AppointmentCreateForm;
 
 @Service
@@ -54,6 +56,39 @@ public class AppointmentService {
       };
 
       return appointments.stream().map(this::toView).toList();
+   }
+
+   @Transactional(readOnly = true)
+   public AppointmentDetailsView getForCurrentUser(final Long id) {
+      if (id == null) {
+         throw new IllegalArgumentException("id cannot be null");
+      }
+
+      final CurrentUser me = this.currentUserProvider.requireCurrentUser();
+      final User user = this.userRepository.findByEmailIgnoreCase(me.email())
+            .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+
+      final Appointment appt = this.appointmentRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
+
+      switch (me.type()) {
+         case CITIZEN -> {
+            if (!appt.getCitizen().getId().equals(user.getId())) {
+               throw new SecurityException("You are not allowed to view this appointment");
+            }
+         }
+         case EMPLOYEE -> {
+            final ServiceDepartment dept = user.getServiceDepartment();
+            if (dept == null || !dept.getId().equals(appt.getServiceDepartment().getId())) {
+               throw new SecurityException("You are not allowed to view this appointment");
+            }
+         }
+         case ADMIN -> {
+            // Admin can view any appointment
+         }
+      }
+
+      return toDetails(appt);
    }
 
    @Transactional
@@ -100,6 +135,26 @@ public class AppointmentService {
             appt.getProtocolNumber(),
             dept,
             appt.getAppointmentDateTime());
+   }
+
+   private AppointmentDetailsView toDetails(final Appointment appt) {
+      final DepartmentSummary dept = new DepartmentSummary(
+            appt.getServiceDepartment().getId(),
+            appt.getServiceDepartment().getCode(),
+            appt.getServiceDepartment().getName());
+      final User citizen = appt.getCitizen();
+      final UserSummary citizenSummary = new UserSummary(
+            citizen.getId(),
+            citizen.getFirstName() + " " + citizen.getLastName(),
+            citizen.getEmail());
+      return new AppointmentDetailsView(
+            appt.getId(),
+            appt.getProtocolNumber(),
+            dept,
+            appt.getServiceDepartment().getDescription(),
+            appt.getAppointmentDateTime(),
+            citizenSummary,
+            citizen.getPhoneNumber());
    }
 
    private String generateProtocol(final Long id) {

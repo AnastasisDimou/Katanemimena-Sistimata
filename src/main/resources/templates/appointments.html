@@ -33,7 +33,12 @@
             <ul class="preview-list">
                <li th:each="a : ${appointments}" class="preview-item">
                   <div>
-                     <div class="preview-item__title" th:text="${a.protocolNumber()}">APP-000</div>
+                     <a
+                        class="preview-item__title"
+                        th:href="@{|/appointments/${a.id()}|}"
+                        th:text="${a.protocolNumber()}"
+                        >APP-000</a
+                     >
                      <div class="preview-item__meta">
                         <span th:text="${a.department().name()}">Τμήμα</span>
                         <span class="dot">•</span>

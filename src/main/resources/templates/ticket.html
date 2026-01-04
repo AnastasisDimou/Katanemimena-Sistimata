@@ -75,12 +75,6 @@
          >
             <h3 class="text-md" style="margin-top: 0">Περιεχόμενο Πολίτη</h3>
             <p th:text="${request.content()}"></p>
-            <p th:if="${request.attachmentUrl() != null}" class="text-sm mt-2">
-               <i class="fas fa-paperclip"></i> <strong>Συνημμένο:</strong>
-               <a th:href="${request.attachmentUrl()}" target="_blank"
-                  >Προβολή Αρχείου</a
-               >
-            </p>
          </div>
 
          <div

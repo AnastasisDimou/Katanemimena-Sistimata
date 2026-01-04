@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Σφάλμα</title>
+   </head>
+
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <div class="card-box" style="text-align: center">
+            <h1 class="text-xl" style="margin-top: 0">Κάτι πήγε στραβά</h1>
+            <p class="muted" th:text="${error} ?: 'Παρουσιάστηκε σφάλμα κατά την επεξεργασία του αιτήματος.'">
+               Παρουσιάστηκε σφάλμα κατά την επεξεργασία του αιτήματος.
+            </p>
+            <div style="margin: 16px 0; color: #555; font-size: 0.95rem">
+               <span th:if="${status != null}">
+                  Κωδικός: <b th:text="${status}">500</b>
+               </span>
+               <span th:if="${path != null}" style="display: block; margin-top: 6px">
+                  Διαδρομή: <code th:text="${path}">/</code>
+               </span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/}">Επιστροφή στην αρχική</a>
+         </div>
+      </main>
+   </body>
+</html>

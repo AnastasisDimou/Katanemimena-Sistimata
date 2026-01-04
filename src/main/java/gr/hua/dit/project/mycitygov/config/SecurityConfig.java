@@ -74,7 +74,7 @@ public class SecurityConfig {
                         .formLogin(form -> form
                                     .loginPage("/login")
                                     .loginProcessingUrl("/login")
-                                    .defaultSuccessUrl("/", true)
+                                    .defaultSuccessUrl("/profile", true)
                                     .failureUrl("/login?error")
                                     .permitAll())
 
@@ -92,7 +92,7 @@ public class SecurityConfig {
             http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
             return http.build();
-      }
+}
 
       @Bean
       public PasswordEncoder passwordEncoder() {

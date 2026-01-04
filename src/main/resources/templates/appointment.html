@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Ραντεβού <th:block th:text="${appointment.protocolNumber()}"></th:block></title>
+   </head>
+
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <p class="mb-4">
+            <a th:href="@{/appointments}" style="color: var(--primary-color)">
+               <i class="fas fa-arrow-left"></i> Πίσω στα ραντεβού
+            </a>
+         </p>
+
+         <div class="card-box">
+            <div
+               style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-start;
+                  gap: 12px;
+                  flex-wrap: wrap;
+               "
+            >
+               <div>
+                  <p class="muted mb-1">Πρωτόκολλο</p>
+                  <h1 class="text-xl" th:text="${appointment.protocolNumber()}">APP-000001</h1>
+                  <div class="preview-item__meta">
+                     <span th:text="${appointment.department().name()}">Τμήμα</span>
+                     <span class="dot">•</span>
+                     <span
+                        th:text="${#temporals.format(appointment.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}"
+                        >Ημερομηνία</span
+                     >
+                  </div>
+               </div>
+               <span class="status-pill status-pill--neutral">Κλεισμένο</span>
+            </div>
+
+            <hr style="margin: 20px 0; border: 1px solid #f1f1f1" />
+
+            <div
+               style="
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                  gap: 20px;
+               "
+            >
+               <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 16px">
+                  <h3 class="text-md" style="margin-top: 0; color: var(--primary-color)">
+                     Λεπτομέρειες Ραντεβού
+                  </h3>
+                  <ul style="padding-left: 18px; margin: 0; color: #333; display: grid; gap: 8px">
+                     <li>
+                        <strong>Υπηρεσία:</strong>
+                        <span th:text="${appointment.department().name()}">Τμήμα</span>
+                        <span class="muted" th:text="'(' + ${appointment.department().code()} + ')'">Κωδικός</span>
+                     </li>
+                     <li>
+                        <strong>Ημερομηνία & Ώρα:</strong>
+                        <span
+                           th:text="${#temporals.format(appointment.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}"
+                           >Ημερομηνία</span
+                        >
+                     </li>
+                     <li th:if="${appointment.departmentDescription() != null}">
+                        <strong>Περιγραφή Υπηρεσίας:</strong>
+                        <span th:text="${appointment.departmentDescription()}">Περιγραφή</span>
+                     </li>
+                     <li>
+                        <strong>Κατάσταση:</strong>
+                        <span>Κλεισμένο</span>
+                     </li>
+                  </ul>
+               </div>
+
+               <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 16px">
+                  <h3 class="text-md" style="margin-top: 0; color: var(--primary-color)">
+                     Στοιχεία Πολίτη
+                  </h3>
+                  <ul style="padding-left: 18px; margin: 0; color: #333; display: grid; gap: 8px">
+                     <li>
+                        <strong>Ονοματεπώνυμο:</strong>
+                        <span th:text="${appointment.citizen().fullName()}">Όνομα</span>
+                     </li>
+                     <li>
+                        <strong>Email:</strong>
+                        <a th:href="'mailto:' + ${appointment.citizen().email()}" th:text="${appointment.citizen().email()}">
+                           politis@example.com
+                        </a>
+                     </li>
+                     <li th:if="${appointment.citizenPhoneNumber() != null}">
+                        <strong>Τηλέφωνο:</strong>
+                        <span th:text="${appointment.citizenPhoneNumber()}">2100000000</span>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </main>
+   </body>
+</html>

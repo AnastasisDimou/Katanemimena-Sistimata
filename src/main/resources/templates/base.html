@@ -49,6 +49,9 @@
                <li sec:authorize="isAuthenticated()">
                   <a th:href="@{/appointments}">Ραντεβού</a>
                </li>
+               <li sec:authorize="hasRole('ADMIN')">
+                  <a th:href="@{/admin}">Διαχείριση</a>
+               </li>
                <li sec:authorize="isAuthenticated()">
                   <a th:href="@{/profile}">Προφίλ</a>
                </li>
