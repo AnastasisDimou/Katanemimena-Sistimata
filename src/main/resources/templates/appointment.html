@@ -2,6 +2,7 @@
 <html
    xmlns:th="https://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
    layout:decorate="~{base}"
 >
    <head>
@@ -38,7 +39,11 @@
                      >
                   </div>
                </div>
-               <span class="status-pill status-pill--neutral">Κλεισμένο</span>
+               <span
+                  class="status-pill"
+                  th:classappend="${appointment.status() != null and appointment.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
+                  th:text="${appointment.status() != null and appointment.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
+               >Μη ολοκληρωμένο</span>
             </div>
 
             <hr style="margin: 20px 0; border: 1px solid #f1f1f1" />
@@ -73,7 +78,9 @@
                      </li>
                      <li>
                         <strong>Κατάσταση:</strong>
-                        <span>Κλεισμένο</span>
+                        <span
+                           th:text="${appointment.status() != null and appointment.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
+                        >Μη ολοκληρωμένο</span>
                      </li>
                   </ul>
                </div>
@@ -99,6 +106,24 @@
                      </li>
                   </ul>
                </div>
+            </div>
+
+            <div sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN')" style="margin-top: 24px">
+               <h3 class="text-md" style="margin-top: 0; color: var(--primary-color)">
+                  Ενημέρωση Κατάστασης Ραντεβού
+               </h3>
+               <form th:action="@{|/appointments/${appointment.id()}/status|}" method="post" th:object="${statusForm}">
+                  <div class="form-group" style="max-width: 320px">
+                     <label class="form-label" for="status">Κατάσταση</label>
+                     <select id="status" class="form-select" th:field="*{status}">
+                        <option value="NOT_COMPLETED">Μη ολοκληρωμένο</option>
+                        <option value="COMPLETED">Ολοκληρωμένο</option>
+                     </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary text-md">
+                     <i class="fas fa-sync-alt"></i> Ενημέρωση
+                  </button>
+               </form>
             </div>
          </div>
       </main>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gr.hua.dit.project.mycitygov.core.model.Appointment;
+import gr.hua.dit.project.mycitygov.core.model.AppointmentStatus;
 import gr.hua.dit.project.mycitygov.core.model.ServiceDepartment;
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.model.UserType;
@@ -21,6 +22,7 @@ import gr.hua.dit.project.mycitygov.core.service.model.AppointmentView;
 import gr.hua.dit.project.mycitygov.core.service.model.DepartmentSummary;
 import gr.hua.dit.project.mycitygov.core.service.model.UserSummary;
 import gr.hua.dit.project.mycitygov.web.ui.model.AppointmentCreateForm;
+import gr.hua.dit.project.mycitygov.web.ui.model.UpdateAppointmentStatusForm;
 
 @Service
 public class AppointmentService {
@@ -117,12 +119,49 @@ public class AppointmentService {
       appt.setCitizen(citizen);
       appt.setServiceDepartment(dept);
       appt.setAppointmentDateTime(when);
+      appt.setStatus(AppointmentStatus.NOT_COMPLETED);
 
       appt = this.appointmentRepository.save(appt);
       appt.setProtocolNumber(generateProtocol(appt.getId()));
       appt = this.appointmentRepository.save(appt);
 
       return toView(appt);
+   }
+
+   @Transactional
+   public AppointmentDetailsView updateStatus(final Long id, final UpdateAppointmentStatusForm form) {
+      if (id == null) {
+         throw new IllegalArgumentException("id cannot be null");
+      }
+      if (form == null) {
+         throw new IllegalArgumentException("form cannot be null");
+      }
+
+      final CurrentUser me = this.currentUserProvider.requireCurrentUser();
+      if (me.type() != UserType.EMPLOYEE && me.type() != UserType.ADMIN) {
+         throw new SecurityException("Employee or admin role required");
+      }
+
+      final Appointment appt = this.appointmentRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
+
+      if (me.type() == UserType.EMPLOYEE) {
+         final User employee = this.userRepository.findByEmailIgnoreCase(me.email())
+               .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+         final ServiceDepartment dept = employee.getServiceDepartment();
+         if (dept == null || !dept.getId().equals(appt.getServiceDepartment().getId())) {
+            throw new SecurityException("You are not allowed to update this appointment");
+         }
+      }
+
+      final AppointmentStatus newStatus = form.status();
+      if (newStatus == null) {
+         throw new IllegalArgumentException("status cannot be null");
+      }
+
+      appt.setStatus(newStatus);
+      final Appointment saved = this.appointmentRepository.save(appt);
+      return toDetails(saved);
    }
 
    private AppointmentView toView(final Appointment appt) {
@@ -134,7 +173,8 @@ public class AppointmentService {
             appt.getId(),
             appt.getProtocolNumber(),
             dept,
-            appt.getAppointmentDateTime());
+            appt.getAppointmentDateTime(),
+            resolveStatus(appt));
    }
 
    private AppointmentDetailsView toDetails(final Appointment appt) {
@@ -153,8 +193,22 @@ public class AppointmentService {
             dept,
             appt.getServiceDepartment().getDescription(),
             appt.getAppointmentDateTime(),
+            resolveStatus(appt),
             citizenSummary,
             citizen.getPhoneNumber());
+   }
+
+   private AppointmentStatus resolveStatus(final Appointment appt) {
+      if (appt.getStatus() != null) {
+         return appt.getStatus();
+      }
+      final LocalDateTime when = appt.getAppointmentDateTime();
+      if (when == null) {
+         return AppointmentStatus.NOT_COMPLETED;
+      }
+      return when.isBefore(LocalDateTime.now())
+            ? AppointmentStatus.COMPLETED
+            : AppointmentStatus.NOT_COMPLETED;
    }
 
    private String generateProtocol(final Long id) {

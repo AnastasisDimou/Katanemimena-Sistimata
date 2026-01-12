@@ -25,6 +25,10 @@ public class Appointment {
    @Column(nullable = false)
    private LocalDateTime appointmentDateTime;
 
+   @Enumerated(EnumType.STRING)
+   @Column(nullable = false, length = 20)
+   private AppointmentStatus status;
+
    public Appointment() {
    }
 
@@ -80,6 +84,14 @@ public class Appointment {
       this.appointmentDateTime = appointmentDateTime;
    }
 
+   public AppointmentStatus getStatus() {
+      return status;
+   }
+
+   public void setStatus(AppointmentStatus status) {
+      this.status = status;
+   }
+
    @Override
    public String toString() {
       return "Appointment{" +
@@ -88,6 +100,7 @@ public class Appointment {
             ", citizenId=" + (citizen != null ? citizen.getId() : null) +
             ", departmentId=" + (serviceDepartment != null ? serviceDepartment.getId() : null) +
             ", appointmentDateTime=" + appointmentDateTime +
+            ", status=" + status +
             '}';
    }
 }

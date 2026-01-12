@@ -133,7 +133,11 @@
                                 <span th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
                             </div>
                         </div>
-                        <span class="status-pill status-pill--neutral">Κλεισμένο</span>
+                        <span
+                                class="status-pill"
+                                th:classappend="${a.status() != null and a.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
+                                th:text="${a.status() != null and a.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
+                        >Μη ολοκληρωμένο</span>
                     </li>
                     <li
                             th:if="${appointmentPreview == null || #lists.isEmpty(appointmentPreview)}"

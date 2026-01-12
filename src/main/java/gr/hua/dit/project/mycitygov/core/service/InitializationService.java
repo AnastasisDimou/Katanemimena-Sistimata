@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import gr.hua.dit.project.mycitygov.core.model.Appointment;
+import gr.hua.dit.project.mycitygov.core.model.AppointmentStatus;
 import gr.hua.dit.project.mycitygov.core.model.Request;
 import gr.hua.dit.project.mycitygov.core.model.RequestStatus;
 import gr.hua.dit.project.mycitygov.core.model.RequestType;
@@ -211,8 +212,10 @@ public class InitializationService {
 
 		final Appointment a1 = new Appointment(null, "APP-000001", citizen, kep,
 				now.plusDays(2).withHour(10).withMinute(0));
+		a1.setStatus(AppointmentStatus.NOT_COMPLETED);
 		final Appointment a2 = new Appointment(null, "APP-000002", citizen, tech,
 				now.plusDays(4).withHour(12).withMinute(30));
+		a2.setStatus(AppointmentStatus.NOT_COMPLETED);
 
 		final List<Appointment> appointments = List.of(a1, a2);
 		appointmentRepository.saveAll(appointments);

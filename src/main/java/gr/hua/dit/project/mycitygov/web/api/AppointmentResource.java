@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import gr.hua.dit.project.mycitygov.core.model.Appointment;
+import gr.hua.dit.project.mycitygov.core.model.AppointmentStatus;
 import gr.hua.dit.project.mycitygov.core.model.User;
 import gr.hua.dit.project.mycitygov.core.repository.AppointmentRepository;
 import gr.hua.dit.project.mycitygov.core.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -77,6 +79,20 @@ public class AppointmentResource {
             appt.getId(),
             appt.getProtocolNumber(),
             dept,
-            appt.getAppointmentDateTime());
+            appt.getAppointmentDateTime(),
+            resolveStatus(appt));
+   }
+
+   private AppointmentStatus resolveStatus(final Appointment appt) {
+      if (appt.getStatus() != null) {
+         return appt.getStatus();
+      }
+      final LocalDateTime when = appt.getAppointmentDateTime();
+      if (when == null) {
+         return AppointmentStatus.NOT_COMPLETED;
+      }
+      return when.isBefore(LocalDateTime.now())
+            ? AppointmentStatus.COMPLETED
+            : AppointmentStatus.NOT_COMPLETED;
    }
 }

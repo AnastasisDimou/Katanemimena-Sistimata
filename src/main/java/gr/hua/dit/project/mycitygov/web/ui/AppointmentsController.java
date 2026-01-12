@@ -5,6 +5,7 @@ import gr.hua.dit.project.mycitygov.core.service.AppointmentService;
 import gr.hua.dit.project.mycitygov.core.service.model.AppointmentDetailsView;
 import gr.hua.dit.project.mycitygov.core.service.model.AppointmentView;
 import gr.hua.dit.project.mycitygov.web.ui.model.AppointmentCreateForm;
+import gr.hua.dit.project.mycitygov.web.ui.model.UpdateAppointmentStatusForm;
 
 import jakarta.validation.Valid;
 
@@ -40,6 +41,7 @@ public class AppointmentsController {
    public String showAppointment(@PathVariable("id") final Long id, final Model model) {
       final AppointmentDetailsView appointment = this.appointmentService.getForCurrentUser(id);
       model.addAttribute("appointment", appointment);
+      model.addAttribute("statusForm", new UpdateAppointmentStatusForm(appointment.status()));
       return "appointment";
    }
 
@@ -61,5 +63,20 @@ public class AppointmentsController {
       }
       final AppointmentView created = this.appointmentService.createAppointment(form);
       return "redirect:/appointments?created=" + created.protocolNumber();
+   }
+
+   @PostMapping("/appointments/{id}/status")
+   public String updateStatus(
+         @PathVariable("id") final Long id,
+         @ModelAttribute("statusForm") @Valid final UpdateAppointmentStatusForm statusForm,
+         final BindingResult bindingResult,
+         final Model model) {
+      if (bindingResult.hasErrors()) {
+         final AppointmentDetailsView appointment = this.appointmentService.getForCurrentUser(id);
+         model.addAttribute("appointment", appointment);
+         return "appointment";
+      }
+      this.appointmentService.updateStatus(id, statusForm);
+      return "redirect:/appointments/" + id;
    }
 }
