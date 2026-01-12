@@ -19,14 +19,24 @@
                     <a
                             th:href="@{/tickets/new}"
                             class="btn btn-primary"
-                            sec:authorize="isAuthenticated() and !hasRole('ADMIN')"
+                            sec:authorize="hasRole('CITIZEN')"
                     >Νέο Αίτημα</a
                     >
                     <a
                             th:href="@{/appointments/new}"
                             class="btn btn-primary"
-                            sec:authorize="isAuthenticated() and !hasRole('ADMIN')"
+                            sec:authorize="hasRole('CITIZEN')"
                     >Νέο Ραντεβού</a>
+                    <a
+                            th:href="@{/tickets}"
+                            class="btn btn-primary"
+                            sec:authorize="hasRole('EMPLOYEE')"
+                    >Προβολή Αιτημάτων</a>
+                    <a
+                            th:href="@{/appointments}"
+                            class="btn btn-primary"
+                            sec:authorize="hasRole('EMPLOYEE')"
+                    >Προβολή Ραντεβού</a>
                     <a
                             th:href="@{/tickets}"
                             class="btn btn-primary"
@@ -132,6 +142,33 @@
                         Δεν υπάρχουν ραντεβού.
                     </li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Content (Features) -->
+    <section class="container" style="margin-bottom: 50px;" th:if="${!isAuthenticated}">
+        <div class="text-center">
+            <h2 class="text-xl">Πώς λειτουργεί;</h2>
+            <p class="text-md">Τρία απλά βήματα για την εξυπηρέτησή σας.</p>
+        </div>
+
+        <!-- Simple Grid for features -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; text-align: center;">
+            <div>
+                <i class="fas fa-user-plus fa-3x" style="color: var(--primary-color);"></i>
+                <h3 class="text-lg">1. Εγγραφή</h3>
+                <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
+            </div>
+            <div>
+                <i class="fas fa-file-alt fa-3x" style="color: var(--primary-color);"></i>
+                <h3 class="text-lg">2. Αίτημα</h3>
+                <p>Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.</p>
+            </div>
+            <div>
+                <i class="fas fa-check-circle fa-3x" style="color: var(--primary-color);"></i>
+                <h3 class="text-lg">3. Ενημέρωση</h3>
+                <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
             </div>
         </div>
     </section>
