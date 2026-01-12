@@ -95,7 +95,7 @@
 
          <!-- Employee/Admin Actions -->
          <div sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN')" class="mt-4">
-            <h3 class="text-lg">Ενέργειες Υπαλλήλου</h3>
+            <h3 class="text-lg">Ενέργειες Διαχείρισης</h3>
 
             <div th:if="${request.assignedEmployee() == null}">
                <p style="color: var(--primary-color); font-weight: 600">
@@ -113,7 +113,7 @@
             </div>
 
             <div
-               th:if="${request.assignedEmployee() != null and request.assignedEmployee().id() == me.id() and request.status().name() != 'COMPLETED' and request.status().name() != 'REJECTED'}"
+               th:if="${(me.type().name() == 'ADMIN' or (request.assignedEmployee() != null and request.assignedEmployee().id() == me.id())) and request.status().name() != 'COMPLETED' and request.status().name() != 'REJECTED'}"
             >
                <form
                   th:action="@{|/tickets/${request.id()}/status|}"

@@ -1,6 +1,7 @@
 package gr.hua.dit.project.mycitygov.core.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -113,6 +114,7 @@ public class AppointmentService {
       if (when == null) {
          throw new IllegalArgumentException("appointmentDateTime cannot be null");
       }
+      validateWithinServiceHours(dept, when);
 
       Appointment appt = new Appointment();
       appt.setProtocolNumber("APP-TMP-" + UUID.randomUUID());
@@ -209,6 +211,25 @@ public class AppointmentService {
       return when.isBefore(LocalDateTime.now())
             ? AppointmentStatus.COMPLETED
             : AppointmentStatus.NOT_COMPLETED;
+   }
+
+   private void validateWithinServiceHours(final ServiceDepartment dept, final LocalDateTime when) {
+      final LocalTime start = dept.getAppointmentStartTime();
+      final LocalTime end = dept.getAppointmentEndTime();
+      if (start == null || end == null) {
+         return;
+      }
+      final LocalTime time = when.toLocalTime();
+      if (time.isBefore(start) || time.isAfter(end)) {
+         final String startLabel = formatTime(start);
+         final String endLabel = formatTime(end);
+         throw new IllegalArgumentException("Η ώρα ραντεβού πρέπει να είναι μεταξύ " + startLabel + " και "
+               + endLabel + " για το τμήμα " + dept.getName() + ".");
+      }
+   }
+
+   private String formatTime(final LocalTime time) {
+      return time == null ? "" : time.toString().substring(0, 5);
    }
 
    private String generateProtocol(final Long id) {

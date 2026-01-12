@@ -187,17 +187,32 @@ public class RequestService {
 		if (requestId == null)
 			throw new NullPointerException("requestId cannot be null");
 
-		final User employee = requireAuthenticatedUser(UserType.EMPLOYEE);
-		final ServiceDepartment dept = employee.getServiceDepartment();
-		if (dept == null)
-			throw new SecurityException("Employee is not linked to a service department");
+		final CurrentUser current = this.currentUserProvider.requireCurrentUser();
+		final User employee = requireAuthenticatedUser(current, UserType.EMPLOYEE, UserType.ADMIN);
+		if (current.type() == UserType.EMPLOYEE) {
+			final ServiceDepartment dept = employee.getServiceDepartment();
+			if (dept == null)
+				throw new SecurityException("Employee is not linked to a service department");
+
+			final Request req = this.requestRepository.findById(requestId)
+					.orElseThrow(() -> new IllegalArgumentException("Request not found"));
+
+			if (!req.getRequestType().getServiceDepartment().getId().equals(dept.getId())) {
+				throw new SecurityException("Employee cannot access this request");
+			}
+
+			if (req.getAssignedEmployee() != null && !req.getAssignedEmployee().getId().equals(employee.getId())) {
+				throw new IllegalStateException("Request already assigned to another employee");
+			}
+
+			req.setAssignedEmployee(employee);
+			req.setStatus(RequestStatus.IN_PROGRESS);
+			final Request saved = this.requestRepository.save(req);
+			return toDetailsView(saved);
+		}
 
 		final Request req = this.requestRepository.findById(requestId)
 				.orElseThrow(() -> new IllegalArgumentException("Request not found"));
-
-		if (!req.getRequestType().getServiceDepartment().getId().equals(dept.getId())) {
-			throw new SecurityException("Employee cannot access this request");
-		}
 
 		if (req.getAssignedEmployee() != null && !req.getAssignedEmployee().getId().equals(employee.getId())) {
 			throw new IllegalStateException("Request already assigned to another employee");
@@ -216,12 +231,15 @@ public class RequestService {
 		if (form == null)
 			throw new NullPointerException("form cannot be null");
 
-		final User employee = requireAuthenticatedUser(UserType.EMPLOYEE);
+		final CurrentUser current = this.currentUserProvider.requireCurrentUser();
+		final User employee = requireAuthenticatedUser(current, UserType.EMPLOYEE, UserType.ADMIN);
 		final Request req = this.requestRepository.findById(requestId)
 				.orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
-		if (req.getAssignedEmployee() == null || !req.getAssignedEmployee().getId().equals(employee.getId())) {
-			throw new SecurityException("Request is not assigned to the current employee");
+		if (current.type() == UserType.EMPLOYEE) {
+			if (req.getAssignedEmployee() == null || !req.getAssignedEmployee().getId().equals(employee.getId())) {
+				throw new SecurityException("Request is not assigned to the current user");
+			}
 		}
 
 		final RequestStatus newStatus = form.newStatus();
@@ -287,13 +305,19 @@ public class RequestService {
 				req.getEmployeeComments());
 	}
 
-	private User requireAuthenticatedUser(final UserType expectedType) {
+	private User requireAuthenticatedUser(final UserType... allowedTypes) {
 		final CurrentUser current = this.currentUserProvider.requireCurrentUser();
-		if (current.type() != expectedType) {
-			throw new SecurityException("Expected role " + expectedType);
+		return requireAuthenticatedUser(current, allowedTypes);
+	}
+
+	private User requireAuthenticatedUser(final CurrentUser current, final UserType... allowedTypes) {
+		for (final UserType allowed : allowedTypes) {
+			if (current.type() == allowed) {
+				return this.userRepository.findByEmailIgnoreCase(current.email())
+						.orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+			}
 		}
-		return this.userRepository.findByEmailIgnoreCase(current.email())
-				.orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+		throw new SecurityException("Expected role " + current.type());
 	}
 
 	private String generateProtocol(final Long id) {

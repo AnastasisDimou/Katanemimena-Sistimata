@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
 public record AppointmentCreateForm(
-      @NotNull Long departmentId,
-      @NotNull @Future @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime appointmentDateTime) {
+      @NotNull(message = "Επιλέξτε υπηρεσία.") Long departmentId,
+      @NotNull(message = "Επιλέξτε ημερομηνία και ώρα.")
+      @Future(message = "Η ημερομηνία και ώρα πρέπει να είναι στο μέλλον.")
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime appointmentDateTime) {
 }

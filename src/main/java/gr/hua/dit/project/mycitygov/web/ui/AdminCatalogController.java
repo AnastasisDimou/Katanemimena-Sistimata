@@ -1,7 +1,9 @@
 package gr.hua.dit.project.mycitygov.web.ui;
 
+import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gr.hua.dit.project.mycitygov.core.model.ServiceDepartment;
@@ -82,6 +85,27 @@ public class AdminCatalogController {
          redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
       }
       return "redirect:/admin/request-types";
+   }
+
+   @GetMapping("/appointment-hours")
+   public String showAppointmentHours(final Model model) {
+      model.addAttribute("departments", this.adminCatalogService.listDepartments());
+      return "admin_appointment_hours";
+   }
+
+   @PostMapping("/departments/hours")
+   public String updateDepartmentHours(
+         @RequestParam("departmentId") final Long departmentId,
+         @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) final LocalTime startTime,
+         @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) final LocalTime endTime,
+         final RedirectAttributes redirectAttributes) {
+      try {
+         this.adminCatalogService.updateDepartmentHours(departmentId, startTime, endTime);
+         redirectAttributes.addFlashAttribute("successMessage", "Το ωράριο ενημερώθηκε.");
+      } catch (Exception ex) {
+         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+      }
+      return "redirect:/admin/appointment-hours";
    }
 
    private void loadRequestTypes(final Model model) {

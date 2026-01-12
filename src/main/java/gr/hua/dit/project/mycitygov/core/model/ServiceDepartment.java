@@ -1,6 +1,7 @@
 package gr.hua.dit.project.mycitygov.core.model;
 
 import jakarta.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "service_departments")
@@ -18,6 +19,12 @@ public class ServiceDepartment {
 
    @Column(length = 500)
    private String description;
+
+   @Column(name = "appointment_start_time", nullable = false)
+   private LocalTime appointmentStartTime;
+
+   @Column(name = "appointment_end_time", nullable = false)
+   private LocalTime appointmentEndTime;
 
    public ServiceDepartment() {
    }
@@ -61,6 +68,22 @@ public class ServiceDepartment {
 
    public void setDescription(String description) {
       this.description = description;
+   }
+
+   public LocalTime getAppointmentStartTime() {
+      return appointmentStartTime;
+   }
+
+   public void setAppointmentStartTime(LocalTime appointmentStartTime) {
+      this.appointmentStartTime = appointmentStartTime;
+   }
+
+   public LocalTime getAppointmentEndTime() {
+      return appointmentEndTime;
+   }
+
+   public void setAppointmentEndTime(LocalTime appointmentEndTime) {
+      this.appointmentEndTime = appointmentEndTime;
    }
 
    @Override

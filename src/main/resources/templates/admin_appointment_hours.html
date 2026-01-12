@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{base}"
+>
+   <head>
+      <title>Ωράριο Ραντεβού</title>
+   </head>
+
+   <body>
+      <main layout:fragment="main" class="content-main container-sm">
+         <h1 class="text-xl">Ωράριο Ραντεβού</h1>
+         <p class="muted" style="margin-bottom: 16px">
+            Ορίστε το επιτρεπόμενο ωράριο για νέα ραντεβού ανά τμήμα.
+         </p>
+
+         <div th:if="${successMessage != null}" class="alert alert-success" th:text="${successMessage}"></div>
+         <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+         <div class="card-box">
+            <h2 class="text-lg" style="margin-top: 0">Ρυθμίσεις Ωραρίου</h2>
+            <p class="muted">Παράδειγμα: 09:00 - 17:00</p>
+            <div style="display: grid; gap: 12px; margin-top: 12px">
+               <form th:each="d : ${departments}" th:action="@{/admin/departments/hours}" method="post"
+                  style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+                  <input type="hidden" name="departmentId" th:value="${d.id}" />
+                  <div style="min-width: 200px; font-weight: 600">
+                     <span th:text="${d.name}">Τμήμα</span>
+                  </div>
+                  <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+                     <label class="form-label" style="margin: 0">
+                        Από
+                        <input class="form-control" type="time" name="startTime" required
+                           th:value="${d.appointmentStartTime != null ? #temporals.format(d.appointmentStartTime, 'HH:mm') : '09:00'}" />
+                     </label>
+                     <label class="form-label" style="margin: 0">
+                        Έως
+                        <input class="form-control" type="time" name="endTime" required
+                           th:value="${d.appointmentEndTime != null ? #temporals.format(d.appointmentEndTime, 'HH:mm') : '17:00'}" />
+                     </label>
+                     <button type="submit" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-save"></i> Αποθήκευση
+                     </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </main>
+   </body>
+</html>

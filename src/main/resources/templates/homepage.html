@@ -1,180 +1,221 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-        layout:decorate="~{base}"
+   xmlns:th="https://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+   layout:decorate="~{base}"
 >
-<main layout:fragment="main">
-    <section class="hero">
-        <div class="container text-center">
+   <main layout:fragment="main">
+      <section class="hero">
+         <div class="container text-center">
             <div class="hero-content">
-                <h1 class="hero-text text-xxl">Καλώς ήρθατε στο MyCityGov</h1>
-                <p class="text-xl my-4 font-semibold">
-                    Η ολοκληρωμένη πλατφόρμα ψηφιακών υπηρεσιών του Δήμου.
-                    Υποβάλετε αιτήματα και κλείστε ραντεβού εύκολα και γρήγορα.
-                </p>
-                <br /><br />
-                <div class="hero-buttons">
-                    <a
-                            th:href="@{/tickets/new}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('CITIZEN')"
-                    >Νέο Αίτημα</a
-                    >
-                    <a
-                            th:href="@{/appointments/new}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('CITIZEN')"
-                    >Νέο Ραντεβού</a>
-                    <a
-                            th:href="@{/tickets}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('EMPLOYEE')"
-                    >Προβολή Αιτημάτων</a>
-                    <a
-                            th:href="@{/appointments}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('EMPLOYEE')"
-                    >Προβολή Ραντεβού</a>
-                    <a
-                            th:href="@{/tickets}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('ADMIN')"
-                    >Έλεγχος Αιτημάτων</a>
-                    <a
-                            th:href="@{/appointments}"
-                            class="btn btn-primary"
-                            sec:authorize="hasRole('ADMIN')"
-                    >Έλεγχος Ραντεβού</a>
-                    <a
-                            th:href="@{/register}"
-                            class="btn btn-dark"
-                            sec:authorize="!isAuthenticated()"
-                    >Εγγραφή</a
-                    >
-                    <a
-                            th:href="@{/login}"
-                            class="btn btn-primary"
-                            sec:authorize="!isAuthenticated()"
-                    >Σύνδεση</a
-                    >
-                </div>
+               <h1 class="hero-text text-xxl">Καλώς ήρθατε στο MyCityGov</h1>
+               <p class="text-xl my-4 font-semibold">
+                  Η ολοκληρωμένη πλατφόρμα ψηφιακών υπηρεσιών του Δήμου.
+                  Υποβάλετε αιτήματα και κλείστε ραντεβού εύκολα και γρήγορα.
+               </p>
+               <br /><br />
+               <div class="hero-buttons">
+                  <a
+                     th:href="@{/tickets/new}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('CITIZEN')"
+                     >Νέο Αίτημα</a
+                  >
+                  <a
+                     th:href="@{/appointments/new}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('CITIZEN')"
+                     >Νέο Ραντεβού</a
+                  >
+                  <a
+                     th:href="@{/tickets}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('EMPLOYEE')"
+                     >Προβολή Αιτημάτων</a
+                  >
+                  <a
+                     th:href="@{/appointments}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('EMPLOYEE')"
+                     >Προβολή Ραντεβού</a
+                  >
+                  <a
+                     th:href="@{/tickets}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('ADMIN')"
+                     >Έλεγχος Αιτημάτων</a
+                  >
+                  <a
+                     th:href="@{/appointments}"
+                     class="btn btn-primary"
+                     sec:authorize="hasRole('ADMIN')"
+                     >Έλεγχος Ραντεβού</a
+                  >
+                  <a
+                     th:href="@{/register}"
+                     class="btn btn-dark"
+                     sec:authorize="!isAuthenticated()"
+                     >Εγγραφή</a
+                  >
+                  <a
+                     th:href="@{/login}"
+                     class="btn btn-primary"
+                     sec:authorize="!isAuthenticated()"
+                     >Σύνδεση</a
+                  >
+               </div>
             </div>
-        </div>
-    </section>
+         </div>
+      </section>
 
-    <section class="container" style="margin: 60px auto">
-        <div class="text-center">
+      <section
+         class="container"
+         style="margin: 60px auto"
+         th:if="${isAuthenticated}"
+      >
+         <div class="text-center">
             <h2 class="text-xl">Γρήγορη επισκόπηση</h2>
-            <p class="text-md">Δείτε τα πιο πρόσφατα αιτήματα και ραντεβού σας.</p>
-            <p class="text-sm muted" th:if="${!isAuthenticated}">
-                Συνδεθείτε για να εμφανιστούν τα προσωπικά σας στοιχεία.
+            <p class="text-md">
+               Δείτε τα πιο πρόσφατα αιτήματα και ραντεβού σας.
             </p>
-        </div>
+            <p class="text-sm muted" th:if="${!isAuthenticated}">
+               Συνδεθείτε για να εμφανιστούν τα προσωπικά σας στοιχεία.
+            </p>
+         </div>
 
-        <div class="preview-grid">
+         <div class="preview-grid">
             <div class="preview-card">
-                <div class="preview-card__header">
-                    <div>
-                        <h3 class="text-lg">Αιτήματα</h3>
-                        <p class="muted">Τελευταία 3</p>
-                    </div>
-                    <a th:href="@{/tickets}" class="link-primary">Όλα τα αιτήματα</a>
-                </div>
-                <ul class="preview-list">
-                    <li
-                            th:each="t : ${ticketPreview}"
-                            class="preview-item"
-                    >
+               <div class="preview-card__header">
+                  <div>
+                     <h3 class="text-lg">Αιτήματα</h3>
+                     <p class="muted">Τελευταία 3</p>
+                  </div>
+                  <a th:href="@{/tickets}" class="link-primary"
+                     >Όλα τα αιτήματα</a
+                  >
+               </div>
+               <ul class="preview-list">
+                  <li th:each="t : ${ticketPreview}">
+                     <a class="preview-item preview-item--link" th:href="@{|/tickets/${t.id()}|}">
                         <div>
-                            <div class="preview-item__title" th:text="${t.subject()}">Θέμα αιτήματος</div>
-                            <div class="preview-item__meta">
-                                <span th:text="${t.protocolNumber()}">REQ-000</span>
-                                <span class="dot">•</span>
-                                <span th:text="${t.department().name()}">Τμήμα</span>
-                                <span class="dot">•</span>
-                                <span th:text="${#temporals.format(t.submittedAt(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
-                            </div>
+                           <div class="preview-item__title" th:text="${t.subject()}">
+                              Θέμα αιτήματος
+                           </div>
+                           <div class="preview-item__meta">
+                              <span th:text="${t.protocolNumber()}">REQ-000</span>
+                              <span class="dot">•</span>
+                              <span th:text="${t.department().name()}">Τμήμα</span>
+                              <span class="dot">•</span>
+                              <span
+                                 th:text="${#temporals.format(t.submittedAt(), 'dd-MM-yyyy HH:mm')}"
+                                 >Ημερομηνία</span
+                              >
+                           </div>
                         </div>
                         <span class="status-pill" th:text="${t.status().name()}">STATUS</span>
-                    </li>
-                    <li
-                            th:if="${ticketPreview == null || #lists.isEmpty(ticketPreview)}"
-                            class="preview-empty"
-                    >
-                        Δεν υπάρχουν αιτήματα.
-                    </li>
-                </ul>
+                     </a>
+                  </li>
+                  <li
+                     th:if="${ticketPreview == null || #lists.isEmpty(ticketPreview)}"
+                     class="preview-empty"
+                  >
+                     Δεν υπάρχουν αιτήματα.
+                  </li>
+               </ul>
             </div>
 
             <div class="preview-card">
-                <div class="preview-card__header">
-                    <div>
-                        <h3 class="text-lg">Ραντεβού</h3>
-                        <p class="muted">Τελευταία 3</p>
-                    </div>
-                    <a th:href="@{/appointments}" class="link-primary">Όλα τα ραντεβού</a>
-                </div>
-                <ul class="preview-list">
-                    <li
-                            th:each="a : ${appointmentPreview}"
-                            class="preview-item"
-                    >
+               <div class="preview-card__header">
+                  <div>
+                     <h3 class="text-lg">Ραντεβού</h3>
+                     <p class="muted">Τελευταία 3</p>
+                  </div>
+                  <a th:href="@{/appointments}" class="link-primary"
+                     >Όλα τα ραντεβού</a
+                  >
+               </div>
+               <ul class="preview-list">
+                  <li th:each="a : ${appointmentPreview}">
+                     <a class="preview-item preview-item--link" th:href="@{|/appointments/${a.id()}|}">
                         <div>
-                            <a
-                                    class="preview-item__title"
-                                    th:href="@{|/appointments/${a.id()}|}"
-                                    th:text="${a.protocolNumber()}"
-                            >APP-000</a>
-                            <div class="preview-item__meta">
-                                <span th:text="${a.department().name()}">Τμήμα</span>
-                                <span class="dot">•</span>
-                                <span th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
-                            </div>
+                           <div class="preview-item__title" th:text="${a.protocolNumber()}">APP-000</div>
+                           <div class="preview-item__meta">
+                              <span th:text="${a.department().name()}">Τμήμα</span>
+                              <span class="dot">•</span>
+                              <span
+                                 th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}"
+                                 >Ημερομηνία</span
+                              >
+                           </div>
                         </div>
                         <span
-                                class="status-pill"
-                                th:classappend="${a.status() != null and a.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
-                                th:text="${a.status() != null and a.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
-                        >Μη ολοκληρωμένο</span>
-                    </li>
-                    <li
-                            th:if="${appointmentPreview == null || #lists.isEmpty(appointmentPreview)}"
-                            class="preview-empty"
-                    >
-                        Δεν υπάρχουν ραντεβού.
-                    </li>
-                </ul>
+                           class="status-pill"
+                           th:classappend="${a.status() != null and a.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
+                           th:text="${a.status() != null and a.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
+                           >Μη ολοκληρωμένο</span
+                        >
+                     </a>
+                  </li>
+                  <li
+                     th:if="${appointmentPreview == null || #lists.isEmpty(appointmentPreview)}"
+                     class="preview-empty"
+                  >
+                     Δεν υπάρχουν ραντεβού.
+                  </li>
+               </ul>
             </div>
-        </div>
-    </section>
+         </div>
+      </section>
 
-    <!-- Additional Content (Features) -->
-    <section class="container" style="margin-bottom: 50px;" th:if="${!isAuthenticated}">
-        <div class="text-center">
+      <!-- Additional Content (Features) -->
+      <section
+         class="container"
+         style="margin: 160px auto 50px"
+         th:if="${!isAuthenticated}"
+      >
+         <div class="text-center">
             <h2 class="text-xl">Πώς λειτουργεί;</h2>
             <p class="text-md">Τρία απλά βήματα για την εξυπηρέτησή σας.</p>
-        </div>
+         </div>
 
-        <!-- Simple Grid for features -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; text-align: center;">
+         <!-- Simple Grid for features -->
+         <div
+            style="
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+               gap: 20px;
+               margin-top: 30px;
+               text-align: center;
+            "
+         >
             <div>
-                <i class="fas fa-user-plus fa-3x" style="color: var(--primary-color);"></i>
-                <h3 class="text-lg">1. Εγγραφή</h3>
-                <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
+               <i
+                  class="fas fa-user-plus fa-3x"
+                  style="color: var(--primary-color)"
+               ></i>
+               <h3 class="text-lg">1. Εγγραφή</h3>
+               <p>Δημιουργήστε λογαριασμό με το ΑΦΜ ή το ΑΜΚΑ σας.</p>
             </div>
             <div>
-                <i class="fas fa-file-alt fa-3x" style="color: var(--primary-color);"></i>
-                <h3 class="text-lg">2. Αίτημα</h3>
-                <p>Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.</p>
+               <i
+                  class="fas fa-file-alt fa-3x"
+                  style="color: var(--primary-color)"
+               ></i>
+               <h3 class="text-lg">2. Αίτημα</h3>
+               <p>
+                  Επιλέξτε την υπηρεσία και υποβάλετε το αίτημά σας ηλεκτρονικά.
+               </p>
             </div>
             <div>
-                <i class="fas fa-check-circle fa-3x" style="color: var(--primary-color);"></i>
-                <h3 class="text-lg">3. Ενημέρωση</h3>
-                <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
+               <i
+                  class="fas fa-check-circle fa-3x"
+                  style="color: var(--primary-color)"
+               ></i>
+               <h3 class="text-lg">3. Ενημέρωση</h3>
+               <p>Λάβετε ειδοποιήσεις για την εξέλιξη της υπόθεσής σας.</p>
             </div>
-        </div>
-    </section>
-</main>
+         </div>
+      </section>
+   </main>
 </html>

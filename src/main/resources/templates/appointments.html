@@ -2,20 +2,27 @@
 <html
    xmlns:th="https://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
    layout:decorate="~{base}"
 >
    <main layout:fragment="main">
       <section class="hero">
          <div class="container text-center">
             <div class="hero-content">
-               <h1 class="hero-text text-xxl">Τα ραντεβού μου</h1>
+               <h1 class="hero-text text-xxl"
+                  th:text="${#authorization.expression('hasRole(''EMPLOYEE'')')} ? 'Ραντεβού' : 'Τα ραντεβού μου'">
+                  Τα ραντεβού μου
+               </h1>
                <p class="text-xl my-4 font-semibold">
                   Δείτε τα προγραμματισμένα ραντεβού σας και κανονίστε νέα
                   για τις δημοτικές υπηρεσίες.
                </p>
                <div class="hero-buttons">
-                  <a class="btn btn-primary" th:href="@{/appointments/new}">
+                  <a class="btn btn-primary" th:href="@{/appointments/new}" sec:authorize="hasRole('CITIZEN')">
                      <i class="fas fa-calendar-plus"></i> Κλείσε νέο ραντεβού
+                  </a>
+                  <a class="btn btn-danger" th:href="@{/admin/appointment-hours}" sec:authorize="hasRole('ADMIN')">
+                     <i class="fas fa-clock"></i> Διαχείριση Ωραρίου
                   </a>
                </div>
             </div>
@@ -23,7 +30,7 @@
       </section>
 
       <section class="container" style="margin: 50px auto">
-         <div class="preview-card">
+            <div class="preview-card" id="appointments-list">
             <div class="preview-card__header">
                <div>
                   <h2 class="text-lg">Επερχόμενα ραντεβού</h2>
@@ -31,25 +38,22 @@
                </div>
             </div>
             <ul class="preview-list">
-               <li th:each="a : ${appointments}" class="preview-item">
-                  <div>
-                     <a
-                        class="preview-item__title"
-                        th:href="@{|/appointments/${a.id()}|}"
-                        th:text="${a.protocolNumber()}"
-                        >APP-000</a
-                     >
-                     <div class="preview-item__meta">
-                        <span th:text="${a.department().name()}">Τμήμα</span>
-                        <span class="dot">•</span>
-                        <span th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
+               <li th:each="a : ${appointments}">
+                  <a class="preview-item preview-item--link" th:href="@{|/appointments/${a.id()}|}">
+                     <div>
+                        <div class="preview-item__title" th:text="${a.protocolNumber()}">APP-000</div>
+                        <div class="preview-item__meta">
+                           <span th:text="${a.department().name()}">Τμήμα</span>
+                           <span class="dot">•</span>
+                           <span th:text="${#temporals.format(a.appointmentDateTime(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
+                        </div>
                      </div>
-                  </div>
-                  <span
-                     class="status-pill"
-                     th:classappend="${a.status() != null and a.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
-                     th:text="${a.status() != null and a.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
-                  >Μη ολοκληρωμένο</span>
+                     <span
+                        class="status-pill"
+                        th:classappend="${a.status() != null and a.status().name() == 'COMPLETED'} ? ' status-pill--success' : ' status-pill--warning'"
+                        th:text="${a.status() != null and a.status().name() == 'COMPLETED'} ? 'Ολοκληρωμένο' : 'Μη ολοκληρωμένο'"
+                     >Μη ολοκληρωμένο</span>
+                  </a>
                </li>
                <li th:if="${appointments == null || appointments.isEmpty()}" class="preview-empty">
                   Δεν υπάρχουν προγραμματισμένα ραντεβού αυτή τη στιγμή.

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -92,13 +93,26 @@ public class InitializationService {
 		serviceDepartmentRepository.deleteAll();
 
 		// 1) Departments
+		final LocalTime defaultStart = LocalTime.of(9, 0);
+		final LocalTime defaultEnd = LocalTime.of(17, 0);
+
 		final ServiceDepartment kep = new ServiceDepartment(null, "KEP", "ΚΕΠ", "Κέντρο Εξυπηρέτησης Πολιτών");
+		kep.setAppointmentStartTime(defaultStart);
+		kep.setAppointmentEndTime(defaultEnd);
 		final ServiceDepartment tech = new ServiceDepartment(null, "TECH", "Τεχνική Υπηρεσία", "Τεχνικά αιτήματα δήμου");
+		tech.setAppointmentStartTime(defaultStart);
+		tech.setAppointmentEndTime(defaultEnd);
 		final ServiceDepartment clean = new ServiceDepartment(null, "CLEAN", "Καθαριότητα", "Καθαριότητα & αποκομιδές");
+		clean.setAppointmentStartTime(defaultStart);
+		clean.setAppointmentEndTime(defaultEnd);
 		final ServiceDepartment fin = new ServiceDepartment(null, "FIN", "Οικονομική Υπηρεσία",
 				"Οφειλές, βεβαιώσεις, ρυθμίσεις");
+		fin.setAppointmentStartTime(defaultStart);
+		fin.setAppointmentEndTime(defaultEnd);
 		final ServiceDepartment soc = new ServiceDepartment(null, "SOC", "Κοινωνική Υπηρεσία",
 				"Κοινωνικές παροχές & υποστήριξη");
+		soc.setAppointmentStartTime(defaultStart);
+		soc.setAppointmentEndTime(defaultEnd);
 
 		final List<ServiceDepartment> departments = List.of(kep, tech, clean, fin, soc);
 		serviceDepartmentRepository.saveAll(departments);

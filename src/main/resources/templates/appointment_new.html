@@ -13,23 +13,31 @@
          </p>
          <div class="card-box">
             <h1 class="text-xl text-center mb-3">Κλείσιμο Ραντεβού</h1>
+            <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"></div>
             <form th:action="@{/appointments/new}" method="post" th:object="${form}">
                <div class="form-group">
                   <label class="form-label" for="departmentId">Υπηρεσία</label>
-                  <select class="form-select" id="departmentId" name="departmentId" th:field="*{departmentId}" required>
+                  <select class="form-select" id="departmentId" name="departmentId" th:field="*{departmentId}">
                      <option value="">-- Επιλέξτε Υπηρεσία --</option>
                      <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
                   </select>
                   <div class="error-message" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></div>
+                  <div class="error-message" id="departmentIdError"></div>
                </div>
                <div class="form-group">
                   <label class="form-label" for="appointmentDate">Ημερομηνία & Ώρα</label>
                   <div style="display: flex; gap: 12px; flex-wrap: wrap">
-                     <input class="form-control" style="flex: 1 1 180px" type="date" id="appointmentDate" />
-                     <input class="form-control" style="flex: 1 1 140px" type="time" id="appointmentTime" />
+                     <div style="flex: 1 1 180px">
+                        <input class="form-control" type="date" id="appointmentDate" />
+                        <div class="error-message" id="appointmentDateError"></div>
+                     </div>
+                     <div style="flex: 1 1 140px">
+                        <input class="form-control" type="time" id="appointmentTime" step="60" />
+                        <div class="error-message" id="appointmentTimeError"></div>
+                     </div>
                   </div>
                   <input type="hidden" id="appointmentDateTime" name="appointmentDateTime"
-                     th:field="*{appointmentDateTime}" required />
+                     th:field="*{appointmentDateTime}" />
                   <div class="error-message" th:if="${#fields.hasErrors('appointmentDateTime')}"
                      th:errors="*{appointmentDateTime}"></div>
                </div>
@@ -46,8 +54,13 @@
                const hiddenInput = document.getElementById("appointmentDateTime");
                const dateInput = document.getElementById("appointmentDate");
                const timeInput = document.getElementById("appointmentTime");
+               const departmentSelect = document.getElementById("departmentId");
+               const departmentError = document.getElementById("departmentIdError");
+               const dateError = document.getElementById("appointmentDateError");
+               const timeError = document.getElementById("appointmentTimeError");
+               const form = hiddenInput?.closest("form");
 
-               if (!hiddenInput || !dateInput || !timeInput) return;
+               if (!hiddenInput || !dateInput || !timeInput || !departmentSelect) return;
 
                const updateHidden = () => {
                   if (!dateInput.value || !timeInput.value) {
@@ -57,14 +70,52 @@
                   hiddenInput.value = `${dateInput.value}T${timeInput.value}`;
                };
 
-               dateInput.addEventListener("change", updateHidden);
-               timeInput.addEventListener("change", updateHidden);
+               const clearErrors = () => {
+                  if (departmentError) departmentError.textContent = "";
+                  if (dateError) dateError.textContent = "";
+                  if (timeError) timeError.textContent = "";
+               };
+
+               departmentSelect.addEventListener("change", () => {
+                  clearErrors();
+               });
+
+               dateInput.addEventListener("change", () => {
+                  clearErrors();
+                  updateHidden();
+               });
+               timeInput.addEventListener("change", () => {
+                  clearErrors();
+                  updateHidden();
+               });
+
+               form?.addEventListener("submit", (event) => {
+                  let hasError = false;
+                  if (!departmentSelect.value) {
+                     if (departmentError) departmentError.textContent = "Επιλέξτε υπηρεσία.";
+                     hasError = true;
+                  }
+                  if (!dateInput.value) {
+                     if (dateError) dateError.textContent = "Επιλέξτε ημερομηνία.";
+                     hasError = true;
+                  }
+                  if (!timeInput.value) {
+                     if (timeError) timeError.textContent = "Επιλέξτε ώρα.";
+                     hasError = true;
+                  }
+                  if (hasError) {
+                     event.preventDefault();
+                  }
+               });
 
                // Pre-fill visible inputs if value exists (e.g., after validation errors)
                if (hiddenInput.value) {
                   const [datePart, timePart] = hiddenInput.value.split("T");
                   if (datePart) dateInput.value = datePart;
-                  if (timePart) timeInput.value = timePart;
+                  if (timePart) {
+                     const timeParts = timePart.split(":");
+                     timeInput.value = timeParts.slice(0, 2).join(":");
+                  }
                }
             });
          </script>

@@ -1,5 +1,6 @@
 package gr.hua.dit.project.mycitygov.core.service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,7 +50,32 @@ public class AdminCatalogService {
       dept.setCode(form.code().trim());
       dept.setName(form.name().trim());
       dept.setDescription(form.description());
+      dept.setAppointmentStartTime(LocalTime.of(9, 0));
+      dept.setAppointmentEndTime(LocalTime.of(17, 0));
 
+      return this.serviceDepartmentRepository.save(dept);
+   }
+
+   @Transactional
+   public ServiceDepartment updateDepartmentHours(
+         final Long departmentId,
+         final LocalTime startTime,
+         final LocalTime endTime) {
+      if (departmentId == null) {
+         throw new IllegalArgumentException("departmentId cannot be null");
+      }
+      if (startTime == null || endTime == null) {
+         throw new IllegalArgumentException("startTime/endTime cannot be null");
+      }
+      if (!startTime.isBefore(endTime)) {
+         throw new IllegalArgumentException("Η ώρα έναρξης πρέπει να είναι πριν από την ώρα λήξης.");
+      }
+      requireAdmin();
+
+      final ServiceDepartment dept = this.serviceDepartmentRepository.findById(departmentId)
+            .orElseThrow(() -> new IllegalArgumentException("Department not found"));
+      dept.setAppointmentStartTime(startTime);
+      dept.setAppointmentEndTime(endTime);
       return this.serviceDepartmentRepository.save(dept);
    }
 

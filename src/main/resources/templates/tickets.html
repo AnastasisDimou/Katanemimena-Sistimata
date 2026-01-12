@@ -9,60 +9,59 @@
    </head>
 
    <body>
-      <main layout:fragment="main" class="content-main container-sm">
-         <h1 class="text-xl"
-            th:text="${me != null and me.type().name() == 'ADMIN'} ? 'Διαχείριση Αιτημάτων' : 'Τα Αιτήματά μου'">
-            Τα Αιτήματά μου
-         </h1>
-         <div class="mb-4">
-            <a th:href="@{/profile}" class="text-sm" style="color: #666">
-               <i class="fas fa-user-circle"></i> Συνδεδεμένος ως:
-               <b
-                  th:text="${me.email()} + ' (' + ${me.type()} + ')'"
-               ></b>
-            </a>
-         </div>
-         <br />
-         <!-- User (Citizen) Action -->
-         <div th:if="${me.type().name() == 'CITIZEN'}" class="mb-4">
-            <a th:href="@{/tickets/new}" class="btn btn-primary text-md"
-               ><i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος</a
-            >
-         </div>
-         <div th:if="${me.type().name() == 'ADMIN'}" class="mb-4">
-            <a th:href="@{/admin/request-types}" class="btn btn-primary text-md">
-               <i class="fas fa-tasks"></i> Διαχείριση Αιτημάτων
-            </a>
-         </div>
-
-         <br />
-         <h2 id="ticket-list" class="text-lg">Λίστα Αιτημάτων</h2>
-
-         <div class="preview-card" style="margin-top: 12px">
-            <div class="preview-card__header">
-               <div>
-                  <p class="muted">Πιο πρόσφατα αιτήματα</p>
+      <main layout:fragment="main">
+         <section class="hero">
+            <div class="container text-center">
+               <div class="hero-content">
+                  <h1 class="hero-text text-xxl"
+                     th:text="${me != null and me.type().name() == 'ADMIN'} ? 'Διαχείριση Αιτημάτων' : (${me != null and me.type().name() == 'EMPLOYEE'} ? 'Αιτήματα' : 'Τα Αιτήματά μου')">
+                     Τα Αιτήματά μου
+                  </h1>
+                  <p class="text-xl my-4 font-semibold">
+                     Παρακολουθήστε την πορεία των αιτημάτων και ενημερωθείτε για την κατάσταση τους.
+                  </p>
+                  <div class="hero-buttons">
+                     <a th:href="@{/tickets/new}" class="btn btn-primary" sec:authorize="hasRole('CITIZEN')">
+                        <i class="fas fa-plus-circle"></i> Υποβολή νέου Αιτήματος
+                     </a>
+                     <a th:href="@{/admin/request-types}" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">
+                        <i class="fas fa-tasks"></i> Διαχείριση Αιτημάτων
+                     </a>
+                  </div>
                </div>
             </div>
-            <ul class="preview-list">
-               <li th:each="r : ${requests}" class="preview-item">
+         </section>
+
+         <section class="container" style="margin: 50px auto">
+            <div class="preview-card">
+               <div class="preview-card__header">
                   <div>
-                     <a class="preview-item__title" th:href="@{|/tickets/${r.id()}|}" th:text="${r.subject()}">Θέμα</a>
-                     <div class="preview-item__meta">
-                        <span th:text="${r.protocolNumber()}">REQ-000</span>
-                        <span class="dot">•</span>
-                        <span th:text="${r.department().name()}">Τμήμα</span>
-                        <span class="dot">•</span>
-                        <span th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
-                     </div>
+                     <h2 id="ticket-list" class="text-lg">Λίστα Αιτημάτων</h2>
+                     <p class="muted">Πιο πρόσφατα αιτήματα</p>
                   </div>
-                  <span class="status-pill" th:text="${r.status().name()}">STATUS</span>
-               </li>
-               <li th:if="${requests == null || requests.isEmpty()}" class="preview-empty">
-                  Δεν βρέθηκαν καταχωρημένα αιτήματα.
-               </li>
-            </ul>
-         </div>
+               </div>
+               <ul class="preview-list">
+                  <li th:each="r : ${requests}">
+                     <a class="preview-item preview-item--link" th:href="@{|/tickets/${r.id()}|}">
+                        <div>
+                           <div class="preview-item__title" th:text="${r.subject()}">Θέμα</div>
+                           <div class="preview-item__meta">
+                              <span th:text="${r.protocolNumber()}">REQ-000</span>
+                              <span class="dot">•</span>
+                              <span th:text="${r.department().name()}">Τμήμα</span>
+                              <span class="dot">•</span>
+                              <span th:text="${#temporals.format(r.submittedAt(), 'dd-MM-yyyy HH:mm')}">Ημερομηνία</span>
+                           </div>
+                        </div>
+                        <span class="status-pill" th:text="${r.status().name()}">STATUS</span>
+                     </a>
+                  </li>
+                  <li th:if="${requests == null || requests.isEmpty()}" class="preview-empty">
+                     Δεν βρέθηκαν καταχωρημένα αιτήματα.
+                  </li>
+               </ul>
+            </div>
+         </section>
       </main>
    </body>
 </html>
