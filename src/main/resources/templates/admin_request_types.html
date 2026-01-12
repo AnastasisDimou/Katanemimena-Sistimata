@@ -89,8 +89,9 @@
                         </td>
                         <td style="display: flex; gap: 6px; flex-wrap: wrap">
                            <form th:action="@{|/admin/request-types/${rt.id}/toggle|}" method="post">
-                              <button type="submit" class="btn btn-secondary btn-sm">
-                                 <i class="fas fa-toggle-on"></i>
+                              <button type="submit" class="btn btn-sm"
+                                 th:classappend="${rt.active} ? ' btn-warning' : ' btn-success'">
+                                 <i class="fas" th:classappend="${rt.active} ? ' fa-toggle-off' : ' fa-toggle-on'"></i>
                                  <span th:text="${rt.active} ? 'Απενεργοποίηση' : 'Ενεργοποίηση'">Toggle</span>
                               </button>
                            </form>
