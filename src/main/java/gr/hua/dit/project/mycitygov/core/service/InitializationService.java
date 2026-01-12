@@ -166,6 +166,7 @@ public class InitializationService {
 
 		final Request r1 = new Request(
 				"REQ-000001",
+				"Βεβαίωση μόνιμης κατοικίας",
 				citizen,
 				rtKep1,
 				RequestStatus.SUBMITTED,
@@ -173,10 +174,13 @@ public class InitializationService {
 				now.minusDays(1).plusDays(rtKep1.getMaxProcessingDays()),
 				null,
 				employeeKep,
+				null,
+				null,
 				"Παρακαλώ για έκδοση βεβαίωσης μόνιμης κατοικίας.");
 
 		final Request r2 = new Request(
 				"REQ-000002",
+				"Επισκευή δημοτικού φωτισμού",
 				citizen,
 				rtTech1,
 				RequestStatus.IN_PROGRESS,
@@ -184,10 +188,13 @@ public class InitializationService {
 				now.minusDays(3).plusDays(rtTech1.getMaxProcessingDays()),
 				null,
 				employeeTech,
+				null,
+				null,
 				"Ο δημοτικός φωτισμός στην οδό X δεν λειτουργεί.");
 
 		final Request r3 = new Request(
 				"REQ-000003",
+				"Αποκομιδή ογκωδών",
 				citizen,
 				rtClean1,
 				RequestStatus.COMPLETED,
@@ -195,6 +202,8 @@ public class InitializationService {
 				now.minusDays(10).plusDays(rtClean1.getMaxProcessingDays()),
 				now.minusDays(6),
 				employeeClean,
+				null,
+				null,
 				"Αποκομιδή ογκωδών από την οδό Y.");
 
 		final List<Request> requests = List.of(r1, r2, r3);

@@ -442,6 +442,16 @@ ul {
    padding: 10px 12px;
    text-align: left;
 }
+.table-clean th.status-cell,
+.table-clean td.status-cell {
+   text-align: center;
+   vertical-align: middle;
+}
+.table-clean td.status-cell .status-pill {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+}
 .table-clean thead {
    background: #fafafa;
    font-weight: 700;

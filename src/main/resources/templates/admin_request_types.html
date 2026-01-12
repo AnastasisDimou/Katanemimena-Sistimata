@@ -72,7 +72,7 @@
                         <th>Όνομα</th>
                         <th>Τμήμα</th>
                         <th>SLA (ημ.)</th>
-                        <th>Κατάσταση</th>
+                        <th class="status-cell">Κατάσταση</th>
                         <th style="width: 170px">Ενέργειες</th>
                      </tr>
                   </thead>
@@ -82,7 +82,7 @@
                         <td th:text="${rt.name}">Όνομα</td>
                         <td th:text="${rt.departmentName}">Τμήμα</td>
                         <td th:text="${rt.maxProcessingDays} ?: '-'">5</td>
-                        <td>
+                        <td class="status-cell">
                            <span class="status-pill" th:classappend="${rt.active} ? ' status-pill--success' : ' status-pill--danger'">
                               <span th:text="${rt.active} ? 'ΕΝΕΡΓΟ' : 'ΑΝΕΝΕΡΓΟ'">ΕΝΕΡΓΟ</span>
                            </span>
