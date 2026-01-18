@@ -141,6 +141,14 @@ ul {
    cursor: pointer;
    font-weight: 600;
 }
+.btn.btn-login {
+   padding: 12px 28px;
+   font-size: 1.05rem;
+}
+.btn.btn-login-gov {
+   padding: 14px 32px;
+   font-size: 1.1rem;
+}
 .btn:hover {
    opacity: 0.9;
 }
