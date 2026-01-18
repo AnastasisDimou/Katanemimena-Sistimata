@@ -9,17 +9,32 @@ import jakarta.validation.constraints.Size;
  */
 public record CreateUserRequest(
 
-                @NotBlank @Size(min = 9, max = 9) String afm,
+                @NotBlank(message = "Το ΑΦΜ είναι υποχρεωτικό.")
+                @Size(min = 9, max = 9, message = "Το ΑΦΜ πρέπει να έχει 9 ψηφία.")
+                String afm,
 
-                @NotBlank @Size(min = 11, max = 11) String amka,
+                @NotBlank(message = "Το ΑΜΚΑ είναι υποχρεωτικό.")
+                @Size(min = 11, max = 11, message = "Το ΑΜΚΑ πρέπει να έχει 11 ψηφία.")
+                String amka,
 
-                @NotBlank @Size(max = 100) String firstName,
+                @NotBlank(message = "Το όνομα είναι υποχρεωτικό.")
+                @Size(max = 100, message = "Το όνομα πρέπει να έχει έως 100 χαρακτήρες.")
+                String firstName,
 
-                @NotBlank @Size(max = 100) String lastName,
+                @NotBlank(message = "Το επώνυμο είναι υποχρεωτικό.")
+                @Size(max = 100, message = "Το επώνυμο πρέπει να έχει έως 100 χαρακτήρες.")
+                String lastName,
 
-                @NotBlank @Email @Size(max = 100) String email,
+                @NotBlank(message = "Το email είναι υποχρεωτικό.")
+                @Email(message = "Το email δεν είναι έγκυρο.")
+                @Size(max = 100, message = "Το email πρέπει να έχει έως 100 χαρακτήρες.")
+                String email,
 
-                @NotBlank @Size(min = 10, max = 15) String phoneNumber,
+                @NotBlank(message = "Το τηλέφωνο είναι υποχρεωτικό.")
+                @Size(min = 10, max = 10, message = "Ο αριθμός τηλεφώνου πρέπει να έχει 10 ψηφία.")
+                String phoneNumber,
 
-                @NotBlank @Size(min = 8, max = 64) String rawPassword) {
+                @NotBlank(message = "Ο κωδικός είναι υποχρεωτικός.")
+                @Size(min = 8, max = 64, message = "Ο κωδικός πρέπει να είναι μεταξύ 8 και 64 χαρακτήρων.")
+                String rawPassword) {
 }
